@@ -5,22 +5,8 @@ import pqueue.PriorityQueue;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Random;
 
 class PriorityQueueTest {
-
-    private final Random random = new Random();
-
-    private int getRandom() {
-        return random.nextInt();
-    }
-
-    private int getRandom(int min, int max) {
-        if (min > max) {
-            throw new IllegalArgumentException("Value of 'min' should be less or equals to 'max'");
-        }
-        return random.nextInt(max - min) + min;
-    }
 
     @Test
     @DisplayName("Should be true")
@@ -98,7 +84,7 @@ class PriorityQueueTest {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         int max = 0;
         for (int i = 0; i < 30000000; i++) {
-            int now = getRandom(0, 100);
+            int now = Utils.getRandom(0, 100);
             pq.push(now);
             if (now > max) {
                 max = now;
@@ -113,7 +99,7 @@ class PriorityQueueTest {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         int max = 0;
         for (int i = 0; i < 100000000; i++) {
-            int now = getRandom();
+            int now = Utils.getRandom();
             pq.push(now);
             if (now > max) {
                 max = now;
@@ -128,7 +114,7 @@ class PriorityQueueTest {
         PriorityQueue<Integer> pq = new PriorityQueue<>(LinkedList.class);
         int max = 0;
         for (int i = 0; i < 50000; i++) {
-            int now = getRandom(0, 100);
+            int now = Utils.getRandom(0, 100);
             pq.push(now);
             if (now > max) {
                 max = now;
@@ -143,7 +129,7 @@ class PriorityQueueTest {
         PriorityQueue<Integer> pq = new PriorityQueue<>(LinkedList.class);
         int max = 0;
         for (int i = 0; i < 100000; i++) {
-            int now = getRandom();
+            int now = Utils.getRandom();
             pq.push(now);
             if (now > max) {
                 max = now;
