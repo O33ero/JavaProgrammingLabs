@@ -28,7 +28,7 @@ class PriorityQueueTest {
     }
 
     @Test
-    @DisplayName("LinkedList has not constructor with initialCapacity parameter, expected ")
+    @DisplayName("LinkedList has not constructor with initialCapacity parameter, expected IllegalArgumentException")
     void PriorityQueue_Constructors_2() {
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -62,6 +62,45 @@ class PriorityQueueTest {
         Assertions.assertEquals(1, pq.getSize());
         pq.clear();
         Assertions.assertEquals(0, pq.getSize());
+    }
+
+    @Test
+    @DisplayName("Test 'remove' function #1")
+    void PriorityQueue_remove_0() {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.push(21);
+        pq.push(12);
+        pq.push(95);
+        pq.push(1);
+        pq.push(13);
+
+        pq.remove(21);
+        pq.remove(13);
+        pq.remove(100);
+        Assertions.assertEquals(95, pq.pop());
+        Assertions.assertEquals(12, pq.pop());
+        Assertions.assertEquals(1, pq.pop());
+    }
+
+    @Test
+    @DisplayName("Test 'remove' function #2")
+    void PriorityQueue_remove_1() {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.push(21);
+        pq.push(12);
+        pq.push(95);
+        pq.push(1);
+        pq.push(13);
+        pq.push(100);
+        pq.push(9);
+        pq.push(31);
+
+        pq.remove(21);
+        pq.remove(13);
+        pq.remove(31);
+        Assertions.assertEquals(100, pq.pop());
+        Assertions.assertEquals(95, pq.pop());
+        Assertions.assertEquals(12, pq.pop());
     }
 
     @Test

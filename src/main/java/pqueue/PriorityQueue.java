@@ -38,7 +38,7 @@ public class PriorityQueue<E extends Comparable<E>> {
     /**
      * Проверяет очередь на пустоту
      *
-     * @return Возращает True, если очередь пуста, и False - в противном случае.
+     * @return Возвращает True, если очередь пуста, и False - в противном случае.
      */
     public boolean isEmpty() {
         return heap.isEmpty();
@@ -74,7 +74,7 @@ public class PriorityQueue<E extends Comparable<E>> {
     /**
      * Извлекает следующий элемент из очереди.
      *
-     * @return Следущий элемент из очереди
+     * @return Следующий элемент из очереди
      */
     public E pop() {
         E maxElement = heap.get(0); // Get max element (root)
@@ -86,6 +86,27 @@ public class PriorityQueue<E extends Comparable<E>> {
         }
 
         return maxElement; // return max value
+    }
+
+    /**
+     * Удаляет элемент по значению
+     * @param element Элемент для удаления
+     */
+    public void remove(E element) {
+        int deletionIndex = heap.indexOf(element);
+        if (deletionIndex == heap.size() - 1) {
+            heap.remove(element); // Delete last element
+        } else {
+            E lastElement = heap.get(heap.size() - 1); // Last element
+            boolean removeResult = heap.remove(element); // Remove
+            if (removeResult) {
+                heap.add(deletionIndex, lastElement); // Push last element to position of deleted element
+                heap.remove(heap.size() - 1);
+                if (heap.size() > 2) {
+                    shiftDown(deletionIndex); // Shift down it element
+                }
+            }
+        }
     }
 
     private void swap(int i, int j) {
@@ -107,7 +128,7 @@ public class PriorityQueue<E extends Comparable<E>> {
     }
 
     /**
-     * Проверяет родительский корень на соответсвие условию, что корень должен быть не меньше своих потомков.
+     * Проверяет родительский корень на соответствие условию, что корень должен быть не меньше своих потомков.
      * В случае если условие нарушено, выбирается самый большой элемент из потомков и меняется местами с родителем.
      * Рекурсивно повторяется для нового родителя (бывшего самого большого потомка).
      *
