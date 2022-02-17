@@ -104,6 +104,24 @@ class PriorityQueueTest {
     }
 
     @Test
+    @DisplayName("Test with empty queue")
+    void PriorityQueue_Empty_0() {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Assertions.assertNull(pq.pop());
+        Assertions.assertNull(pq.front());
+        pq.remove(1);
+    }
+
+    @Test
+    @DisplayName("Test with one item in queue")
+    void PriorityQueue_Empty_1() {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.push(1);
+        Assertions.assertEquals(1, pq.pop());
+        Assertions.assertNull(pq.front());
+    }
+
+    @Test
     @DisplayName("Adding numbers in reverse order.")
     void PriorityQueue_Push_0() {
         PriorityQueue<Integer> pq = new PriorityQueue<>();

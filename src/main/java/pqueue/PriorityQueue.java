@@ -77,23 +77,46 @@ public class PriorityQueue<E extends Comparable<E>> {
      * @return Следующий элемент из очереди
      */
     public E pop() {
+        if (heap.isEmpty()) {
+            return null;
+        }
+
         E maxElement = heap.get(0); // Get max element (root)
 
-        heap.set(0, heap.get(heap.size() - 1)); // Upping last element to root of heap
-        heap.remove(heap.size() - 1); // Removing last element
-        if (heap.size() > 2) {
+        if (heap.size() > 1) { // If 2 or more elements
+            heap.set(0, heap.get(heap.size() - 1)); // Upping last element to root of heap
+            heap.remove(heap.size() - 1); // Removing last element
             shiftDown(0); // Shift root to down
+        } else { // Only one element
+            heap.remove(0);
         }
 
         return maxElement; // return max value
     }
 
     /**
+     * Возвращает, но не извлекает следующий элемент очереди
+     *
+     * @return Следующий элемент очереди
+     */
+    public E front() {
+        if (heap.isEmpty()) {
+            return null;
+        } else {
+            return heap.get(0);
+        }
+    }
+
+    /**
      * Удаляет элемент по значению
+     *
      * @param element Элемент для удаления
      */
     public void remove(E element) {
         int deletionIndex = heap.indexOf(element);
+        if (deletionIndex == -1) {
+            return; // Element not found
+        }
         if (deletionIndex == heap.size() - 1) {
             heap.remove(element); // Delete last element
         } else {
@@ -160,7 +183,7 @@ public class PriorityQueue<E extends Comparable<E>> {
      * Поднимает потомка выше, если потомок больше чем родитель.
      * Повторяется рекурсивно, пока потомок больше родителя.
      *
-     * @param i индекс потомока
+     * @param i индекс потомка
      */
     private void shiftUp(int i) {
         while (i > 0) {
