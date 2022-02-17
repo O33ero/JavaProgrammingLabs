@@ -2,43 +2,47 @@ package map;
 
 import java.util.*;
 
-public class RBTree<K extends Comparable<K>, V> {
-    private Node<K, V> root;
-    private Comparator<K> comparator;
+class RBTree<T extends Comparable<T>> {
+    private Node<T> root;
+    private Comparator<T> comparator;
 
     /** Constructors **/
     public RBTree() {
-        root = new Node<>(Node.Color.BLACK);
+        root = null;
         comparator = null;
     }
 
-    public RBTree(K key, V value) {
-        root = new Node<>(key, value, Node.Color.BLACK);
+    public RBTree(T value) {
+        root = null;
         comparator = null;
     }
 
-    public RBTree(RBTree<K, V> other) {
+    public RBTree(RBTree<T> other) {
         comparator = null;
-        root = new Node<>(other.root.data, Node.Color.BLACK);
-        if (other.root.leftChild != null) {
-            root.leftChild = new Node<>(other.root.leftChild, other.root.leftChild.color);
+        if (other.root == null) {
+            root = null;
+        } else {
+            root = new Node<>(other.root.data, Node.Color.BLACK);
+            if (other.root.leftChild != null) {
+                root.leftChild = new Node<>(other.root.leftChild, other.root.leftChild.color);
+            }
+            if (other.root.rightChild != null) {
+                root.rightChild = new Node<>(other.root.rightChild, other.root.rightChild.color);
+            }
         }
-        if (other.root.rightChild != null) {
-            root.rightChild = new Node<>(other.root.rightChild, other.root.rightChild.color);
-        }
     }
 
-    public RBTree(Comparator<K> comparator) {
-        root = new Node<>(Node.Color.BLACK);
+    public RBTree(Comparator<T> comparator) {
+        root = null;
         this.comparator = comparator;
     }
 
-    public RBTree(K key, V value, Comparator<K> comparator) {
-        root = new Node<>(key, value, Node.Color.BLACK);
+    public RBTree(T value, Comparator<T> comparator) {
+        root = new Node<>(value, Node.Color.BLACK);
         this.comparator = comparator;
     }
 
-    public RBTree(RBTree<K, V> other, Comparator<K> comparator) {
+    public RBTree(RBTree<T> other, Comparator<T> comparator) {
         this.comparator = comparator;
         root = new Node<>(other.root.data, Node.Color.BLACK);
         if (other.root.leftChild != null) {
@@ -50,7 +54,7 @@ public class RBTree<K extends Comparable<K>, V> {
     }
 
     /** Package-private **/
-    void setRoot(Node<K, V> root) {
+    void setRoot(Node<T> root) {
         this.root = root;
     }
 
@@ -61,26 +65,25 @@ public class RBTree<K extends Comparable<K>, V> {
      * @return Результат проверки на пустоту
      */
     public boolean isEmpty() {
-        return root.data.first == null && root.data.second == null;
+        return root.data == null;
     }
 
     /**
      * Добавляет новый элемент в дерево
      * @param insertionNode Новый узел
      */
-    public void insert(Node<K, V> insertionNode) {
+    public void insert(Node<T> insertionNode) {
         if (comparator != null) {
             insertWithComparator(insertionNode);
             return;
         }
 
-        Node<K, V> cur = root;
-        while (true) {
-            if (cur.data == null) { // Tree is empty, new key-value pair is new root
-                cur.data = insertionNode.data;
-                break;
-            }
+        if (root == null) { // Tree is empty, new key-value pair is new root
+            root = new Node<>(insertionNode.data, Node.Color.BLACK);
+        }
 
+        Node<T> cur = root;
+        while (true) {
             if (insertionNode.data.compareTo(cur.data) < 0) { // Checking left child
                 if (cur.leftChild == null) {
                     insertionNode.parent = cur;
@@ -109,24 +112,19 @@ public class RBTree<K extends Comparable<K>, V> {
         }
     }
 
-    /**
-     * Возвращает значение по ключу {@code key}
-     * @param key Ключ
-     * @return Значение по ключу
-     */
-    public V get(K key) {
+    public T get(T value) {
         if (comparator != null) {
-            return getWithComparator(key);
+            return getWithComparator(value);
         }
 
-        Node<K, V> cur = root;
+        Node<T> cur = root;
 
         while (cur != null) {
-            if (cur.data.first.equals(key)) {
-                return cur.data.second;
+            if (cur.data.equals(value)) {
+                return cur.data;
             }
 
-            if (key.compareTo(cur.data.first) < 0) {
+            if (value.compareTo(cur.data) < 0) {
                 cur = cur.leftChild;
             } else  {
                 cur = cur.rightChild;
@@ -141,43 +139,43 @@ public class RBTree<K extends Comparable<K>, V> {
 
     /**
      * Вставляет новую пару в дерево
-     * @param pair Новая пара
+     * @param value Новая пара
      */
-    private void insert(Pair<K, V> pair) {
+    private void insert(T value) {
         if (comparator != null) {
-            insertWithComparator(pair);
+            insertWithComparator(value);
         } else {
-            insert(new Node<>(pair, Node.Color.RED));
+            insert(new Node<>(value, Node.Color.RED));
         }
     }
 
 
     /**
      * Вставка пары с использованием компаратора
-     * @param pair Новая пара
+     * @param value Новая пара
      */
-    private void insertWithComparator(Pair<K, V> pair) {
-        insertWithComparator(new Node<>(pair, Node.Color.RED));
+    private void insertWithComparator(T value) {
+        insertWithComparator(new Node<>(value, Node.Color.RED));
     }
 
     /**
      * Вставка узла с использованим компаратора
      * @param insertionNode Новый узел
      */
-    private void insertWithComparator(Node<K, V> insertionNode) {
-        Node<K, V> cur = root;
+    private void insertWithComparator(Node<T> insertionNode) {
+        Node<T> cur = root;
 
-        while (true) {
+        while (cur != null) {
             if (cur.data == null) { // Tree is empty, new key-value pair is new root
                 cur.data = insertionNode.data;
                 break;
             }
 
-             if (comparator.compare(insertionNode.data.first, cur.data.first) == 0) { // Duplicates not inserting
+             if (comparator.compare(insertionNode.data, cur.data) == 0) { // Duplicates not inserting
                 return;
             }
 
-            if (comparator.compare(insertionNode.data.first, cur.data.first) < 0) { // Checking left child
+            if (comparator.compare(insertionNode.data, cur.data) < 0) { // Checking left child
                 if (cur.leftChild == null) {
                     insertionNode.parent = cur;
                     cur.leftChild = insertionNode; // Left child is NULL, we found place for new key-value pair
@@ -189,7 +187,7 @@ public class RBTree<K extends Comparable<K>, V> {
                 }
             }
 
-            if (comparator.compare(insertionNode.data.first, cur.data.first) > 0) { // Checking right child
+            if (comparator.compare(insertionNode.data, cur.data) > 0) { // Checking right child
                 if (cur.rightChild == null) {
                     insertionNode.parent = cur;
                     cur.rightChild = insertionNode; // Right child is NULL, we found place for new key-value pair
@@ -208,20 +206,20 @@ public class RBTree<K extends Comparable<K>, V> {
      * @param key Ключ
      * @return Значение
      */
-    private V getWithComparator(K key) {
-        Node<K, V> cur = root;
+    private T getWithComparator(T key) {
+        Node<T> cur = root;
 
         while (cur != null) {
-            if (comparator.compare(cur.data.first, key) == 0) {
-                return cur.data.second;
+            if (comparator.compare(cur.data, key) == 0) {
+                return cur.data;
             }
 
-            if (comparator.compare(key, cur.data.first) < 0) {
+            if (comparator.compare(key, cur.data) < 0) {
                 cur = cur.leftChild;
                 continue;
             }
 
-            if (comparator.compare(key, cur.data.first) > 0) {
+            if (comparator.compare(key, cur.data) > 0) {
                 cur = cur.rightChild;
                 continue;
             }
@@ -236,7 +234,7 @@ public class RBTree<K extends Comparable<K>, V> {
      * Ребалансировка дерева относительно узла
      * @param node Узел относительной ребалансировки
      */
-    private void rbBalance(Node<K, V> node) { // Балансировка КЧД: https://www.happycoders.eu/algorithms/red-black-tree-java/
+    private void rbBalance(Node<T> node) { // Балансировка КЧД: https://www.happycoders.eu/algorithms/red-black-tree-java/
         // Случай #1: Новый элемент - корень => Новый элемент должен быть черным
         if (node == root) {
             node.color = (Node.Color.BLACK);
@@ -244,20 +242,20 @@ public class RBTree<K extends Comparable<K>, V> {
         }
 
         // Родитель черный => балансировка не требуется
-        Node<K, V> parent = node.parent;
+        Node<T> parent = node.parent;
         if (parent.color == Node.Color.BLACK) {
             return;
         }
 
         // Случай #2: Родитель нового элемента - корень => Родитель должен быть черным
-        Node<K, V> grandparent = getGrandparent(node);
+        Node<T> grandparent = getGrandparent(node);
         if (grandparent == null) {
             parent.color = (Node.Color.BLACK);
             return;
         }
 
         // Случай #3: Дядя (node.parent.parent.otherChild) и родитель - красные => Изменить цвет родителя, дедушки (node.parent.parent) и дяди (node.parent.parent.otherChild)
-        Node<K, V> uncle = getUncle(node);
+        Node<T> uncle = getUncle(node);
         if (uncle != null && uncle.color == Node.Color.RED) {
             parent.color = (Node.Color.BLACK);
             grandparent.color = (Node.Color.RED);
@@ -295,9 +293,9 @@ public class RBTree<K extends Comparable<K>, V> {
      * Поворот дерева влево относительно узла
      * @param node Поворот относительно узла
      */
-    private void leftRotate(Node<K, V> node) {
-        Node<K, V> parent = node.parent;
-        Node<K, V> rightChild = node.rightChild;
+    private void leftRotate(Node<T> node) {
+        Node<T> parent = node.parent;
+        Node<T> rightChild = node.rightChild;
         node.rightChild = rightChild.leftChild;
         if (rightChild.leftChild != null) {
             rightChild.leftChild.parent = node;
@@ -324,9 +322,9 @@ public class RBTree<K extends Comparable<K>, V> {
      * Поворот дерева влево относительно узла
      * @param node Поворот относительно узла
      */
-    private void rightRotate(Node<K, V> node) {
-        Node<K, V> parent = node.parent;
-        Node<K, V> leftChild = node.leftChild;
+    private void rightRotate(Node<T> node) {
+        Node<T> parent = node.parent;
+        Node<T> leftChild = node.leftChild;
         node.leftChild = leftChild.rightChild;
         if (leftChild.rightChild != null) {
             leftChild.rightChild.parent = node;
@@ -354,7 +352,7 @@ public class RBTree<K extends Comparable<K>, V> {
      * @param node Относительный узел
      * @return Дедушка относительно узла
      */
-    private Node<K, V> getGrandparent(Node<K, V> node) {
+    private Node<T> getGrandparent(Node<T> node) {
         if (node.parent == null) {
             return null;
         }
@@ -366,8 +364,8 @@ public class RBTree<K extends Comparable<K>, V> {
      * @param node Относительный узел
      * @return Дядя относительно узла
      */
-    private Node<K, V> getUncle(Node<K, V> node) {
-        Node<K, V> grandparent = node.parent.parent;
+    private Node<T> getUncle(Node<T> node) {
+        Node<T> grandparent = node.parent.parent;
         if (grandparent.leftChild == node.parent) {
             return grandparent.rightChild;
         } else if (grandparent.rightChild == node.parent) {
@@ -390,11 +388,11 @@ public class RBTree<K extends Comparable<K>, V> {
         if (this == other) return true;
         if (other == null) return false;
         if (getClass() != other.getClass()) return false;
-        if (comparator != null && !comparator.equals(((RBTree<?, ?>) other).comparator)) {
+        if (comparator != null && !comparator.equals(((RBTree<?>) other).comparator)) {
                 return false;
         }
 
-        return Node.compareNodes(this.root, ((RBTree<?, ?>) other).root);
+        return Node.compareNodes(this.root, ((RBTree<?>) other).root);
     }
 
     @Override

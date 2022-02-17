@@ -117,4 +117,25 @@ class MapTest {
         }
         Assertions.assertEquals(searchedValue, map.get(searchedKey));
     }
+
+    @Test
+    @DisplayName("'Map' with 6.000.000 element. Creation and searching.")
+    void Map_Get_6() {
+        Map<Integer, Integer> map = new Map<>();
+        int searchedKey = Utils.getRandom();
+        int searchedValue = Utils.getRandom();
+        map.put(searchedKey, searchedValue);
+        for(int i = 0; i < 6000000; i++) {
+            map.put(Utils.getRandom(), Utils.getRandom());
+        }
+        Assertions.assertEquals(searchedValue, map.get(searchedKey));
+    }
+
+    @Test
+    @DisplayName("Get from empty map")
+    void Map_Get_7() {
+        Map<Integer, Integer> map = new Map<>();
+        Assertions.assertNull(map.get(1));
+    }
+
 }
