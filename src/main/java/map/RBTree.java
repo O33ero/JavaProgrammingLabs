@@ -3,17 +3,14 @@ package map;
 import java.util.*;
 
 class RBTree<T extends Comparable<T>> {
-    private Node<T> root;
+    private Node<T> root = null;
     private Comparator<T> comparator = Comparable::compareTo;
 
     /** Constructors **/
     public RBTree() {
-        root = null;
-        comparator = Comparable::compareTo;
-    }
-
-    public RBTree(T value) {
-        root = null;
+        // Default constructor.
+        // Root is null (No value - No node)
+        // Default comparator (compareTo)
     }
 
     public RBTree(RBTree<T> other) {
@@ -32,12 +29,6 @@ class RBTree<T extends Comparable<T>> {
     }
 
     public RBTree(Comparator<T> comparator) {
-        root = null;
-        this.comparator = comparator;
-    }
-
-    public RBTree(T value, Comparator<T> comparator) {
-        root = new Node<>(value, Node.Color.BLACK);
         this.comparator = comparator;
     }
 
@@ -53,18 +44,16 @@ class RBTree<T extends Comparable<T>> {
     }
 
     /** Package-private **/
-    void setRoot(Node<T> root) {
-        this.root = root;
+    public void clear() {
+        root = null;
     }
-
-    /* Public funcs */
 
     /**
      * Проверяет на пустоту
      * @return Результат проверки на пустоту
      */
     public boolean isEmpty() {
-        return root.data == null;
+        return root == null;
     }
 
     /**
@@ -75,10 +64,6 @@ class RBTree<T extends Comparable<T>> {
         insert(new Node<>(value, Node.Color.RED));
     }
 
-    /**
-     * Добавляет новый элемент в дерево
-     * @param insertionNode Новый узел
-     */
     private void insert(Node<T> insertionNode) {
         if (root == null) { // Tree is empty, new key-value pair is new root
             root = new Node<>(insertionNode.data, Node.Color.BLACK);
@@ -106,15 +91,20 @@ class RBTree<T extends Comparable<T>> {
                     break;
                 } else {
                     cur = cur.rightChild; // New parent is right child
-                    continue;
                 }
+
             } else {
                 return; // Duplicates not inserting
             }
         }
     }
 
-    public T get(T value) {
+    /**
+     * Проверяет наличие значения в дереве. Возвращает {@code null} если такого значения не существует и само значение из дерева, если оно было найдено.
+     * @param value Искомое значение
+     * @return Значение, если значение есть в дереве, {@code null} - в обратном случае.
+     */
+    public T contain(T value) {
         Node<T> cur = root;
 
         while (cur != null) {
@@ -279,12 +269,10 @@ class RBTree<T extends Comparable<T>> {
     }
 
 
-    /** Перегрузки **/
-
     /**
      * Сравнение деревьев. Перебирая все узлы используя рекуррентный подход
      * @param other Сравниваемое дерево
-     * @return Резултат сравнения
+     * @return Результат сравнения
      */
     @Override
     public boolean equals(Object other) {

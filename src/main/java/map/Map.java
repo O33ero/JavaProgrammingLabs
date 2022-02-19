@@ -1,5 +1,7 @@
 package map;
 
+import java.util.Objects;
+
 public class Map<K extends Comparable<K>, V> {
     RBTree<Pair<K, V>> tree;
 
@@ -24,14 +26,15 @@ public class Map<K extends Comparable<K>, V> {
      * @param value Значение
      */
     public void put(K key, V value) {
-        tree.insert(new Node<>(new Pair<>(key, value), Node.Color.RED));
+        Objects.requireNonNull(key);
+        tree.insert(new Pair<>(key, value));
     }
 
     /**
      * Удаляет все элементы из {@code map}
      */
     public void clear() {
-        tree.setRoot(null); // Delete all subtree
+        tree.clear(); // Delete all subtree
     }
 
     /**
@@ -48,7 +51,7 @@ public class Map<K extends Comparable<K>, V> {
      * @return Значение по ключу или null если такого ключа не существует
      */
     public V get(K key) {
-         var temp = tree.get(new Pair<>(key, null));
+         Pair<K, V> temp = tree.contain(new Pair<>(key, null));
          if (temp != null) {
              return temp.second;
          } else {
