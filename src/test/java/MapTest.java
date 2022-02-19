@@ -1,9 +1,23 @@
 import map.Map;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MapTest {
+
+    // Prepared map with 1.000.000  random generated elements and one guaranteed pair key-value (100-100)
+    static Map<Integer, Integer> sharedMap = new Map<>();
+
+    @BeforeAll
+    static void Map_sharedMap_0() {
+        sharedMap.put(100, 100); // Guaranteed value
+        for(int i = 0; i < 1000000; i++) {
+            int randomValue = Utils.getRandom();
+            sharedMap.put(randomValue, randomValue);
+        }
+    }
+
 
     @Test
     @DisplayName("Should be true")
@@ -136,6 +150,12 @@ class MapTest {
     void Map_Get_7() {
         Map<Integer, Integer> map = new Map<>();
         Assertions.assertNull(map.get(1));
+    }
+
+    @Test
+    @DisplayName("Searching guaranteed value in prepared initialized map with 10.000.000 elements. Should be executed in 10-20ms")
+    void Map_Get_8() {
+        Assertions.assertEquals(100, sharedMap.get(100));
     }
 
 }
