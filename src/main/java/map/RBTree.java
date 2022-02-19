@@ -4,21 +4,20 @@ import java.util.*;
 
 class RBTree<T extends Comparable<T>> {
     private Node<T> root;
-    private Comparator<T> comparator;
+    private Comparator<T> comparator = Comparable::compareTo;
 
     /** Constructors **/
     public RBTree() {
         root = null;
-        comparator = null;
+        comparator = Comparable::compareTo;
     }
 
     public RBTree(T value) {
         root = null;
-        comparator = null;
     }
 
     public RBTree(RBTree<T> other) {
-        comparator = null;
+        comparator = other.comparator;
         if (other.root == null) {
             root = null;
         } else {
@@ -69,112 +68,24 @@ class RBTree<T extends Comparable<T>> {
     }
 
     /**
+     * Вставляет новую пару в дерево
+     * @param value Новая пара
+     */
+    public void insert(T value) {
+        insert(new Node<>(value, Node.Color.RED));
+    }
+
+    /**
      * Добавляет новый элемент в дерево
      * @param insertionNode Новый узел
      */
-    public void insert(Node<T> insertionNode) {
-        if (comparator != null) {
-            insertWithComparator(insertionNode);
-            return;
-        }
-
+    private void insert(Node<T> insertionNode) {
         if (root == null) { // Tree is empty, new key-value pair is new root
             root = new Node<>(insertionNode.data, Node.Color.BLACK);
         }
 
         Node<T> cur = root;
         while (true) {
-            if (insertionNode.data.compareTo(cur.data) < 0) { // Checking left child
-                if (cur.leftChild == null) {
-                    insertionNode.parent = cur;
-                    cur.leftChild = insertionNode; // Left child is NULL, we found place for new key-value pair
-                    rbBalance(cur.leftChild); // Balancing tree with Red-Black rules
-                    break;
-                } else {
-                    cur = cur.leftChild; // New parent is left child
-                    continue;
-                }
-            }
-
-            if (insertionNode.data.compareTo(cur.data) > 0) { // Checking right child
-                if (cur.rightChild == null) {
-                    insertionNode.parent = cur;
-                    cur.rightChild = insertionNode; // Right child is NULL, we found place for new key-value pair
-                    rbBalance(cur.rightChild); // Balancing tree with Red-Black rules
-                    break;
-                } else {
-                    cur = cur.rightChild; // New parent is right child
-                    continue;
-                }
-            } else {
-                return; // Duplicates not inserting
-            }
-        }
-    }
-
-    public T get(T value) {
-        if (comparator != null) {
-            return getWithComparator(value);
-        }
-
-        Node<T> cur = root;
-
-        while (cur != null) {
-            if (cur.data.equals(value)) {
-                return cur.data;
-            }
-
-            if (value.compareTo(cur.data) < 0) {
-                cur = cur.leftChild;
-            } else  {
-                cur = cur.rightChild;
-            }
-        }
-
-        return null;
-    }
-
-
-    /* Private */
-
-    /**
-     * Вставляет новую пару в дерево
-     * @param value Новая пара
-     */
-    private void insert(T value) {
-        if (comparator != null) {
-            insertWithComparator(value);
-        } else {
-            insert(new Node<>(value, Node.Color.RED));
-        }
-    }
-
-
-    /**
-     * Вставка пары с использованием компаратора
-     * @param value Новая пара
-     */
-    private void insertWithComparator(T value) {
-        insertWithComparator(new Node<>(value, Node.Color.RED));
-    }
-
-    /**
-     * Вставка узла с использованим компаратора
-     * @param insertionNode Новый узел
-     */
-    private void insertWithComparator(Node<T> insertionNode) {
-        Node<T> cur = root;
-
-        while (cur != null) {
-            if (cur.data == null) { // Tree is empty, new key-value pair is new root
-                cur.data = insertionNode.data;
-                break;
-            }
-
-             if (comparator.compare(insertionNode.data, cur.data) == 0) { // Duplicates not inserting
-                return;
-            }
-
             if (comparator.compare(insertionNode.data, cur.data) < 0) { // Checking left child
                 if (cur.leftChild == null) {
                     insertionNode.parent = cur;
@@ -197,38 +108,30 @@ class RBTree<T extends Comparable<T>> {
                     cur = cur.rightChild; // New parent is right child
                     continue;
                 }
+            } else {
+                return; // Duplicates not inserting
             }
         }
     }
 
-    /**
-     * Возвращает значение по ключу используя компаратор
-     * @param key Ключ
-     * @return Значение
-     */
-    private T getWithComparator(T key) {
+    public T get(T value) {
         Node<T> cur = root;
 
         while (cur != null) {
-            if (comparator.compare(cur.data, key) == 0) {
+            if (cur.data.equals(value)) {
                 return cur.data;
             }
 
-            if (comparator.compare(key, cur.data) < 0) {
+            if (comparator.compare(value, cur.data) < 0) {
                 cur = cur.leftChild;
-                continue;
-            }
-
-            if (comparator.compare(key, cur.data) > 0) {
+            } else  {
                 cur = cur.rightChild;
-                continue;
             }
-
-            cur = null;
         }
 
         return null;
     }
+
 
     /**
      * Ребалансировка дерева относительно узла
