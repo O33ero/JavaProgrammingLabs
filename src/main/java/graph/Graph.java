@@ -234,6 +234,50 @@ public class Graph<T> {
         return count;
     }
 
+    /**
+     * Возвращает список вершин, которые входят в вершину {@code vertex}.
+     * @param vertex Вершина, относительно которое идет поиск
+     * @return Список вершин, входящих в вершину
+     * @throws GraphException указанной вершины не существует
+     */
+    public List<T> getInEdges(T vertex) throws GraphException {
+        if (!vertexNames.contains(vertex)) {
+            throw new GraphException("Vertex " + vertex + " does not exist");
+        }
+
+        int indexVertex = vertexNames.indexOf(vertex);
+        List<T> inEdges = new ArrayList<>();
+        for (int i = 0; i < vertexNames.size(); i++) {
+            if (adjacencyMatrix.get(i).get(indexVertex) != 0) {
+                inEdges.add(vertexNames.get(i));
+            }
+        }
+
+        return inEdges;
+    }
+
+    /**
+     * Возвращает список вершин, которые выходят из вершины {@code vertex}
+     * @param vertex Вершина, относительно которой идет поиск
+     * @return Список вершин, выходят из вершины
+     * @throws GraphException указанная вершина не найдена
+     */
+    public List<T> getOutEdges(T vertex) throws GraphException {
+        if (!vertexNames.contains((vertex))) {
+            throw new GraphException("Vertex " + vertex + " does not exist");
+        }
+
+        int vertexIndex = vertexNames.indexOf(vertex);
+        List<T> outEdges = new ArrayList<>();
+        for (int i = 0; i < vertexNames.size(); i++) {
+            if (adjacencyMatrix.get(vertexIndex).get(i) != 0) {
+                outEdges.add(vertexNames.get(i));
+            }
+        }
+
+        return outEdges;
+    }
+
     private ArrayList<Integer> arrayListCopies(int n) {
         ArrayList<Integer> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
