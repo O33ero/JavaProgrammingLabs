@@ -2,6 +2,11 @@ package map;
 
 import java.util.Objects;
 
+/**
+ * Реализация ассоциативного массива, в основе которого лежит красно-черное дерево.
+ * @param <K> Тип данных ключа
+ * @param <V> Тип данных значения
+ */
 public class Map<K extends Comparable<K>, V> {
     RBTree<Pair<K, V>> tree;
 

@@ -2,6 +2,10 @@ package map;
 
 import java.util.Objects;
 
+/**
+ * Узлы красно-черного дерева
+ * @param <T> Тип данных, хранимых в дереве
+ */
 class Node <T extends Comparable<T>>{
 
     /**

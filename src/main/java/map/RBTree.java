@@ -2,17 +2,24 @@ package map;
 
 import java.util.*;
 
+/**
+ * Реализация красно-черного дерева.
+ * @param <T> Тип данных, хранимых в дереве
+ */
 class RBTree<T extends Comparable<T>> {
     private Node<T> root = null;
     private Comparator<T> comparator = Comparable::compareTo;
 
-    /** Constructors **/
     public RBTree() {
         // Default constructor.
         // Root is null (No value - No node)
         // Default comparator (compareTo)
     }
 
+    /**
+     * Конструктор копирования
+     * @param other Другое дерево
+     */
     public RBTree(RBTree<T> other) {
         comparator = other.comparator;
         if (other.root == null) {
@@ -28,22 +35,17 @@ class RBTree<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Конструктор с компаратором
+     * @param comparator Компаратор
+     */
     public RBTree(Comparator<T> comparator) {
         this.comparator = comparator;
     }
 
-    public RBTree(RBTree<T> other, Comparator<T> comparator) {
-        this.comparator = comparator;
-        root = new Node<>(other.root.data, Node.Color.BLACK);
-        if (other.root.leftChild != null) {
-            root.leftChild = new Node<>(other.root.leftChild, other.root.leftChild.color);
-        }
-        if (other.root.rightChild != null) {
-            root.rightChild = new Node<>(other.root.rightChild, other.root.rightChild.color);
-        }
-    }
-
-    /** Package-private **/
+    /**
+     * Удаление всех элементов дерева
+     */
     public void clear() {
         root = null;
     }

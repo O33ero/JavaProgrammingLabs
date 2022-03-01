@@ -2,6 +2,11 @@ package map;
 
 import java.util.Objects;
 
+/**
+ * Тип данных, который хранится в красно-черном дереве.
+ * @param <F> Тип первого элемента
+ * @param <S> Тип второго элемента
+ */
 class Pair <F extends Comparable<F>, S> implements Comparable<Pair<F, S>>{
     F first;
     S second;
