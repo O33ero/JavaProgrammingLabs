@@ -277,6 +277,14 @@ public class Graph<T> {
 
         return outEdges;
     }
+    /**
+     * Проверка, что граф имеет вершину {@code vertex}
+     * @param vertex Вершина
+     * @return Результат проверки
+     */
+    public boolean isContain(T vertex) {
+        return vertexNames.contains(vertex);
+    }
 
     private ArrayList<Integer> arrayListCopies(int n) {
         ArrayList<Integer> result = new ArrayList<>();
