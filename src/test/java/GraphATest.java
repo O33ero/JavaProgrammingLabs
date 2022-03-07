@@ -239,4 +239,53 @@ class GraphATest {
 
         Assertions.assertEquals(5001, GraphAlgorithmsA.dijkstra(graph, 1, 5000));
     }
+
+
+    @Test
+    @DisplayName("Test #1 algorithm Kruskal's")
+    void GraphA_kruskal_0() throws GraphException {
+        Graph<Integer> graph = new Graph<>();
+
+        graph.addVertex(0);
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+        graph.addVertex(4);
+        graph.addVertex(5);
+        graph.addVertex(6);
+        graph.addVertex(7);
+        graph.addVertex(8);
+
+        graph.addEdge(0, 1, 4);
+        graph.addEdge(0, 7, 8);
+        graph.addEdge(1, 0, 4);
+        graph.addEdge(1, 7, 11);
+        graph.addEdge(1, 2, 8);
+        graph.addEdge(2, 1, 8);
+        graph.addEdge(2, 8, 2);
+        graph.addEdge(2, 5, 4);
+        graph.addEdge(2, 3, 7);
+        graph.addEdge(3, 2, 7);
+        graph.addEdge(3, 5, 14);
+        graph.addEdge(3, 4, 9);
+        graph.addEdge(4, 3, 9);
+        graph.addEdge(4, 5, 10);
+        graph.addEdge(5, 4, 10);
+        graph.addEdge(5, 3, 14);
+        graph.addEdge(5, 2, 4);
+        graph.addEdge(5, 6, 2);
+        graph.addEdge(6, 5, 2);
+        graph.addEdge(6, 8, 6);
+        graph.addEdge(6, 7, 1);
+        graph.addEdge(7, 6, 1);
+        graph.addEdge(7, 8, 7);
+        graph.addEdge(7, 1, 11);
+        graph.addEdge(7, 0, 8);
+        graph.addEdge(8, 2, 2);
+        graph.addEdge(8, 6, 6);
+        graph.addEdge(8, 7, 7);
+
+        GraphAlgorithmsA.kruskal(graph);
+
+    }
 }

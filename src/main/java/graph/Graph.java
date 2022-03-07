@@ -304,6 +304,20 @@ public class Graph<T> {
         return adjacencyMatrix.get(vertexNames.indexOf(srcVertex)).get(vertexNames.indexOf(destVertex));
     }
 
+    public List<Edge<T>> getAllEdges() {
+        List<Edge<T>> result = new ArrayList<>();
+
+        for (int i = 0; i < vertexNames.size(); i++) {
+            for (int j = 0; j < vertexNames.size(); j++) {
+                if (adjacencyMatrix.get(i).get(j) != 0) {
+                    result.add(new Edge<>(vertexNames.get(i), vertexNames.get(j), adjacencyMatrix.get(i).get(j)));
+                }
+            }
+        }
+
+        return result;
+    }
+
     private ArrayList<Integer> arrayListCopies(int n) {
         ArrayList<Integer> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {

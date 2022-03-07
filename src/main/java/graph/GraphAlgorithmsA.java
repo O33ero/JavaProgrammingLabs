@@ -146,4 +146,94 @@ public class GraphAlgorithmsA {
         return dijkstra(graph, srcVertex).get(destVertex);
     }
 
+    public static <T> Graph<T> kruskal(Graph<T> graph) {
+        Graph<T> spanningGraph = new Graph<>();
+
+        // Create list of edges in non-decreasing order
+        List<Edge<T>> sortedAllEdges = graph.getAllEdges();
+        Collections.sort(sortedAllEdges);
+
+        // Create non-linked graph with duplicate names
+        for (T vertex : graph.vertexNames) {
+            spanningGraph.addVertex(vertex);
+        }
+
+        // List of sets
+        List<Set<T>> setList = new ArrayList<>();
+
+
+        int takenEdges = 0;
+        int countVertexes = graph.vertexCount();
+        Iterator<Edge<T>> iter = sortedAllEdges.listIterator();
+
+        while (iter.hasNext() && takenEdges < countVertexes - 1) {
+            Edge<T> nextEdge = iter.next();
+
+            int srcIndex = kruskalFind(nextEdge.src, setList);
+            int destIndex = kruskalFind(nextEdge.dest, setList);
+
+            if (srcIndex != destIndex) { // src and dest include in different sets
+                Set<T> newUnionSet = new HashSet<>();
+
+                // Get or create srcSet
+                Set<T> srcSet;
+                if (srcIndex != -1) {
+                    srcSet = setList.get(srcIndex);
+                } else {
+                    srcSet = new HashSet<>();
+                    srcSet.add(nextEdge.src);
+                }
+
+                // Get or create destSet
+                Set<T> destSet;
+                if (destIndex != -1) {
+                    destSet = setList.get(destIndex);
+                } else {
+                    destSet = new HashSet<>();
+                    destSet.add(nextEdge.dest);
+                }
+
+                // Union two sets
+                newUnionSet.addAll(srcSet);
+                newUnionSet.addAll(destSet);
+
+                // Remove old sets
+                if (srcIndex != -1) {
+                    setList.remove(srcSet);
+                }
+                if (destIndex != -1) {
+                    setList.remove(destSet);
+                }
+
+                // Add new union set
+                setList.add(newUnionSet);
+
+                // Add new edge
+                spanningGraph.addEdge(nextEdge.src, nextEdge.dest, nextEdge.weight);
+                takenEdges++;
+            } else if (srcIndex == -1 && destIndex == -1) { // src and dest not include in anyone set
+                // Create new set
+                Set<T> newSet = new HashSet<>();
+                newSet.add(nextEdge.src);
+                newSet.add(nextEdge.dest);
+                // Add to setList
+                setList.add(newSet);
+
+                spanningGraph.addEdge(nextEdge.src, nextEdge.dest, nextEdge.weight);
+                takenEdges++;
+            } // else skip edge and go to next
+        }
+
+        return spanningGraph;
+    }
+
+    private static <T> int kruskalFind(T waypoint, List<Set<T>> setList) {
+        for (int i = 0; i < setList.size(); i++) {
+            if (setList.get(i).contains(waypoint)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
