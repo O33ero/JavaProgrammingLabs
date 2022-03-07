@@ -25,8 +25,8 @@ import java.util.*;
  * @see <a href=www.baeldung.com/java-graphs>baeldung.com/java-graphs</a>
  */
 public class Graph<T> {
-    private final List<T> vertexNames = new ArrayList<>(); // All vertex names
-    private final List<ArrayList<Integer>> adjacencyMatrix = new ArrayList<>();  // Adjacency Matrix (Матрица смежности)
+    final List<T> vertexNames = new ArrayList<>(); // All vertex names
+    final List<ArrayList<Integer>> adjacencyMatrix = new ArrayList<>();  // Adjacency Matrix (Матрица смежности)
 
 
     public Graph() {
@@ -298,6 +298,10 @@ public class Graph<T> {
             }
         }
         return true;
+    }
+
+    public int getWeight(T srcVertex, T destVertex) {
+        return adjacencyMatrix.get(vertexNames.indexOf(srcVertex)).get(vertexNames.indexOf(destVertex));
     }
 
     private ArrayList<Integer> arrayListCopies(int n) {
