@@ -286,6 +286,20 @@ public class Graph<T> {
         return vertexNames.contains(vertex);
     }
 
+    /**
+     * Проверка, что граф содержит хотя бы один отрицательные вес на ребрах.
+     * @return Результат проверки
+     */
+    public boolean containNegativeEdge() {
+        for (List<Integer> row : adjacencyMatrix) {
+            long countNegativeWeight = row.stream().filter(x -> x < 0).count();
+            if (countNegativeWeight != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private ArrayList<Integer> arrayListCopies(int n) {
         ArrayList<Integer> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
