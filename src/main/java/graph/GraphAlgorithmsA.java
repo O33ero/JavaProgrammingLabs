@@ -62,9 +62,10 @@ public class GraphAlgorithmsA {
      * Алгоритм Дейкстры. Возвращает {@code map} содержащую веса кратчайших путей от {@code srcVertex}
      * до всех остальных вершин. В случае отсутствия пути от {@code srcVertex} до какой либо вершины,
      * значение в {@code map} будет равно {@code Integer.MAX_VALUE}.
-     * @param graph Граф
+     *
+     * @param graph     Граф
      * @param srcVertex Исходная вершина
-     * @param <T> Тип данных, обозначающих имя вершины
+     * @param <T>       Тип данных, обозначающих имя вершины
      * @return Карта с весами кратчайших путей
      * @throws GraphException Граф не должен содержать отрицательных весов, вершина {@code srcVertex} должна принадлежать графу.
      */
@@ -104,7 +105,7 @@ public class GraphAlgorithmsA {
 
                 int oldWeightNeighbor = shortestPathWeight.get(vertexNeighbor); // Wight to vertex or +INF (MAX_VALUE)
                 int newWeightNeighbor = graph.getWeight(cur, vertexNeighbor); // This edge always exist
-                if (    (oldWeightNeighbor == Integer.MAX_VALUE) || // Weight == +INF
+                if ((oldWeightNeighbor == Integer.MAX_VALUE) || // Weight == +INF
                         (oldWeightNeighbor > newWeightNeighbor + shortestPathWeight.get(cur))) { // newWeight < oldWeight
                     shortestPathWeight.replace(vertexNeighbor, newWeightNeighbor + weightCur);
                 }
@@ -122,10 +123,11 @@ public class GraphAlgorithmsA {
      * Алгоритм Дейкстры. Возвращает значение веса кратчайшего путу от {@code srcVertex}
      * до {@code destVertex}. В случае отсутствия пути от {@code srcVertex} до {@code destVertex},
      * значение будет равно {@code Integer.MAX_VALUE}.
-     * @param graph Граф
-     * @param srcVertex Исходная вершина
+     *
+     * @param graph      Граф
+     * @param srcVertex  Исходная вершина
      * @param destVertex Конечная вершина
-     * @param <T> Тип данных, обозначающих имя вершины
+     * @param <T>        Тип данных, обозначающих имя вершины
      * @return Значение веса кратчайшего пути от {@code srcVertex} до {@code destVertex}
      * @throws GraphException Граф не должен содержать отрицательных весов, вершины {@code srcVertex} и {@code destVertex} должны принадлежать графу.
      */
