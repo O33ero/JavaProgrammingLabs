@@ -269,6 +269,21 @@ public class MatrixGraph<T> implements Graph<T> {
     }
 
     @Override
+    public List<Edge<T>> getEdges(T vertex) {
+        List<Edge<T>> result = new ArrayList<>();
+        int indexVertex = vertexNames.indexOf(vertex);
+        List<Integer> vertexList = adjacencyMatrix.get(indexVertex);
+
+        for(int i = 0; i < vertexList.size(); i++) {
+            if (vertexList.get(i) != 0) {
+                result.add(new Edge<>(vertex, vertexNames.get(i), vertexList.get(i)));
+            }
+        }
+
+        return result;
+    }
+
+    @Override
     public List<T> getVertexNames() {
         return vertexNames;
     }

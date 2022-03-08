@@ -238,4 +238,33 @@ public class GraphAlgorithmsA {
         return -1;
     }
 
+    public static <T> Graph<T> prim(Graph<T> graph) {
+        Graph<T> spanningGraph = graph.getNewInstance();
+        for(T vertex : graph.getVertexNames()) {
+            spanningGraph.addVertex(vertex);
+        }
+
+        List<T> unvisited = new LinkedList<>(graph.getVertexNames());
+
+        PriorityQueue<Edge<T>> sortedEdges = new PriorityQueue<>();
+
+        T cur = unvisited.iterator().next(); // get random vertex
+        sortedEdges.addAll(graph.getEdges(cur)); // get all edges
+        unvisited.remove(cur);
+        while (!unvisited.isEmpty()){
+            while(!sortedEdges.isEmpty()) {
+                Edge<T> minimalEdge = sortedEdges.poll();
+                if (unvisited.contains(minimalEdge.dest)) { // if new edge creating loop, it will be dropped and selected next edge
+                    spanningGraph.addEdge(minimalEdge.src, minimalEdge.dest, minimalEdge.weight);
+                    cur = minimalEdge.dest;
+                    break;
+                }
+            }
+            sortedEdges.addAll(graph.getEdges(cur)); // get all edges
+            unvisited.remove(cur);
+        }
+
+        return spanningGraph;
+    }
+
 }

@@ -95,6 +95,13 @@ public interface Graph<T> {
     List<Edge<T>> getAllEdges();
 
     /**
+     * Возвращает список вершин, для которых {@code vertex} является истоком.
+     * @param vertex Имя вершины
+     * @return Список ребер
+     */
+    List<Edge<T>> getEdges(T vertex);
+
+    /**
      * Возвращает список всех имен вершин в графе
      * @return Список имен вершин
      */

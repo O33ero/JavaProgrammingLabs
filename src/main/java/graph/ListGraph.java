@@ -168,6 +168,18 @@ public class ListGraph<T> implements Graph<T>{
     }
 
     @Override
+    public List<Edge<T>> getEdges(T vertex) {
+        List<Edge<T>> result = new ArrayList<>();
+
+        int indexVertex = vertexNames.indexOf(vertex);
+        List<Node<T>> vertexList = adjacencyList.get(indexVertex);
+        for (Node<T> node : vertexList) {
+            result.add(new Edge<>(vertex, node.name, node.weight));
+        }
+        return result;
+    }
+
+    @Override
     public List<T> getVertexNames() {
         return vertexNames;
     }
