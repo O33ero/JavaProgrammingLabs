@@ -17,18 +17,16 @@ public interface Graph<T> {
      *
      * @param from Из
      * @param to В
-     * @return Результат добавления
      */
-    boolean addEdge(T from, T to);
+    void addEdge(T from, T to);
 
     /**
      * Добавляет новое ребро с весом {@code weight}
      * @param from Из
      * @param to В
      * @param weight Вес
-     * @return Результат добавления
      */
-    boolean addEdge(T from, T to, int weight);
+    void addEdge(T from, T to, int weight);
 
     /**
      * Удаляет ребро

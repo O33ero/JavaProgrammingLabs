@@ -142,11 +142,10 @@ public class MatrixGraph<T> implements Graph<T> {
      *
      * @param from Вершина, из которой идет ребро
      * @param to   Вершина, в которое идет ребро
-     * @return {@code false} если какой то из указанных вершин не существует, и {@code true} - в противном случае.
      */
     @Override
-    public boolean addEdge(T from, T to) {
-        return addEdge(from, to, 1);
+    public void addEdge(T from, T to) {
+        addEdge(from, to, 1);
     }
 
     /**
@@ -156,21 +155,19 @@ public class MatrixGraph<T> implements Graph<T> {
      *
      * @param from Вершина, из которой идет ребро
      * @param to   Вершина, в которое идет ребро
-     * @return {@code false} если какой то из указанных вершин не существует, и {@code true} - в противном случае.
      */
     @Override
-    public boolean addEdge(T from, T to, int weight) {
+    public void addEdge(T from, T to, int weight) {
         int indexFrom;
         int indexTo;
         if (!vertexNames.contains(from) || !vertexNames.contains(to)) {
-            return false;
+            return;
         } else {
             indexFrom = vertexNames.indexOf(from);
             indexTo = vertexNames.indexOf(to);
         }
 
         setEdge(indexFrom, indexTo, weight);
-        return true;
     }
 
     private void setEdge(int indexFrom, int indexTo, int value) {
@@ -315,10 +312,10 @@ public class MatrixGraph<T> implements Graph<T> {
         for (List<Integer> row : adjacencyMatrix) {
             long countNegativeWeight = row.stream().filter(x -> x < 0).count();
             if (countNegativeWeight != 0) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override
