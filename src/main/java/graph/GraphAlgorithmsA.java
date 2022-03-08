@@ -21,7 +21,7 @@ public class GraphAlgorithmsA {
             if (!visited.contains(cur)) {
                 visited.add(cur);
 
-                List<T> neighbors = graph.getOutEdges(srcVertex);
+                List<T> neighbors = graph.getOutEdges(cur);
                 for (T neighborVertex : neighbors) {
                     if (!visited.contains(neighborVertex)) {
                         stack.add(neighborVertex);
@@ -76,7 +76,7 @@ public class GraphAlgorithmsA {
         if (!graph.isContain(srcVertex)) {
             throw new GraphException("Vertex '" + srcVertex + "' does not exist");
         }
-        if (!graph.containNegativeEdge()) {
+        if (graph.containNegativeEdge()) {
             throw new GraphException("Graph contain negative weight and algorithm Dijkstra cannot be used");
         }
 
@@ -141,7 +141,7 @@ public class GraphAlgorithmsA {
         if (!graph.isContain(destVertex)) {
             throw new GraphException("Vertex '" + destVertex + "' does not exist");
         }
-        if (!graph.containNegativeEdge()) {
+        if (graph.containNegativeEdge()) {
             throw new GraphException("Graph contain negative weight and algorithm Dijkstra cannot be used");
         }
 

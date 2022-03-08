@@ -110,15 +110,6 @@ public class MatrixGraph<T> implements Graph<T> {
         }
     }
 
-
-    /**
-     * Добавить новую вершину.
-     * Если вершина с таким именем уже существует, то будет возвращено {@code false}.
-     * Если такой вершины не существует, то она будет создана и возвращено {@code true}
-     *
-     * @param vertexName Имя новой вершины
-     * @return Результат добавления. {@code false} если такая вершина уже существует, и {@code true} - в противном случае
-     */
     @Override
     public boolean addVertex(T vertexName) {
         if (vertexNames.contains(vertexName)) {
@@ -135,27 +126,11 @@ public class MatrixGraph<T> implements Graph<T> {
         }
     }
 
-    /**
-     * Добавляет новое ребро. Вес ребра принимает значение по умолчанию - 1.
-     * Если какая-либо вершина не существует, то будет возвращено {@code false}.
-     * Если вершины существует, то будет создано новое ребро и возвращено {@code true}
-     *
-     * @param from Вершина, из которой идет ребро
-     * @param to   Вершина, в которое идет ребро
-     */
     @Override
     public void addEdge(T from, T to) {
         addEdge(from, to, 1);
     }
 
-    /**
-     * Добавляет новое ребро. Вес ребра принимает значение из параметра {@code weight}.
-     * Если какая-либо вершина не существует, то будет возвращено {@code false}.
-     * Если вершины существует, то будет создано новое ребро и возвращено {@code true}
-     *
-     * @param from Вершина, из которой идет ребро
-     * @param to   Вершина, в которое идет ребро
-     */
     @Override
     public void addEdge(T from, T to, int weight) {
         int indexFrom;
@@ -174,13 +149,6 @@ public class MatrixGraph<T> implements Graph<T> {
         adjacencyMatrix.get(indexFrom).set(indexTo, value);
     }
 
-
-    /**
-     * Удаляет ребро.
-     *
-     * @param from Вершина, из которой идет ребро
-     * @param to   Вершина, в которое идет ребро
-     */
     @Override
     public void removeEdge(T from, T to) {
         int indexFrom;
@@ -195,11 +163,6 @@ public class MatrixGraph<T> implements Graph<T> {
         setEdge(indexFrom, indexTo, 0);
     }
 
-    /**
-     * Удаляет вершину по имени
-     *
-     * @param vertex Вершина
-     */
     @Override
     public void removeVertex(T vertex) {
         int indexVertex;
@@ -216,21 +179,11 @@ public class MatrixGraph<T> implements Graph<T> {
         vertexNames.remove(indexVertex);
     }
 
-    /**
-     * Возвращает количество вершина
-     *
-     * @return Количество вершин
-     */
     @Override
     public int vertexCount() {
         return vertexNames.size();
     }
 
-    /**
-     * Возвращает количество ненулевых ребер
-     *
-     * @return Количество ребер
-     */
     @Override
     public int edgeCount() {
         int count = 0;
@@ -245,12 +198,6 @@ public class MatrixGraph<T> implements Graph<T> {
         return count;
     }
 
-    /**
-     * Возвращает список вершин, которые входят в вершину {@code vertex}.
-     *
-     * @param vertex Вершина, относительно которое идет поиск
-     * @return Список вершин, входящих в вершину
-     */
     @Override
     public List<T> getInEdges(T vertex) throws GraphException {
         if (!vertexNames.contains(vertex)) {
@@ -268,12 +215,6 @@ public class MatrixGraph<T> implements Graph<T> {
         return inEdges;
     }
 
-    /**
-     * Возвращает список вершин, которые выходят из вершины {@code vertex}
-     *
-     * @param vertex Вершина, относительно которой идет поиск
-     * @return Список вершин, выходят из вершины
-     */
     @Override
     public List<T> getOutEdges(T vertex) throws GraphException {
         if (!vertexNames.contains((vertex))) {
@@ -291,22 +232,11 @@ public class MatrixGraph<T> implements Graph<T> {
         return outEdges;
     }
 
-    /**
-     * Проверка, что граф имеет вершину {@code vertex}
-     *
-     * @param vertex Вершина
-     * @return Результат проверки
-     */
     @Override
     public boolean isContain(T vertex) {
         return vertexNames.contains(vertex);
     }
 
-    /**
-     * Проверка, что граф содержит хотя бы один отрицательные вес на ребрах.
-     *
-     * @return Результат проверки
-     */
     @Override
     public boolean containNegativeEdge() {
         for (List<Integer> row : adjacencyMatrix) {

@@ -1,7 +1,4 @@
-import graph.Graph;
-import graph.MatrixGraph;
-import graph.GraphAlgorithmsA;
-import graph.GraphException;
+import graph.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -244,7 +241,7 @@ class GraphATest {
 
     @Test
     @DisplayName("Test #1 algorithm Kruskal's")
-    void GraphA_kruskal_0() throws GraphException {
+    void GraphA_kruskal_0() {
         Graph<Integer> graph = new MatrixGraph<>();
 
         graph.addVertex(0);
@@ -286,7 +283,7 @@ class GraphATest {
         graph.addEdge(8, 6, 6);
         graph.addEdge(8, 7, 7);
 
-        GraphAlgorithmsA.kruskal(graph);
+        System.out.println(GraphAlgorithmsA.kruskal(graph));
 
     }
 }
