@@ -81,7 +81,7 @@ public class GraphAlgorithmsA {
         }
 
         Map<T, Integer> shortestPathWeight = new HashMap<>(); // Minimal weight of path from src to vertex
-        for (T vertex : graph.vertexNames) {
+        for (T vertex : graph.getVertexNames()) {
             if (vertex.equals(srcVertex)) {
                 shortestPathWeight.put(vertex, 0);
             } else {
@@ -149,14 +149,14 @@ public class GraphAlgorithmsA {
     }
 
     public static <T> Graph<T> kruskal(Graph<T> graph) {
-        Graph<T> spanningGraph = new Graph<>();
+        Graph<T> spanningGraph = graph.getNewInstance();
 
         // Create list of edges in non-decreasing order
         List<Edge<T>> sortedAllEdges = graph.getAllEdges();
         Collections.sort(sortedAllEdges);
 
         // Create non-linked graph with duplicate names
-        for (T vertex : graph.vertexNames) {
+        for (T vertex : graph.getVertexNames()) {
             spanningGraph.addVertex(vertex);
         }
 

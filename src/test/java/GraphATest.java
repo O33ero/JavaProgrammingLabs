@@ -1,4 +1,5 @@
 import graph.Graph;
+import graph.MatrixGraph;
 import graph.GraphAlgorithmsA;
 import graph.GraphException;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +20,7 @@ class GraphATest {
     @Test
     @DisplayName("Test graph with 10 elements without edges by DFS")
     void GraphA_dfs_0() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
         Set<Integer> expectedSet = new HashSet<>(); // Expected set [1] for vertex "1"
         expectedSet.add(1);
 
@@ -33,7 +34,7 @@ class GraphATest {
     @Test
     @DisplayName("Test graph with 10 elements with 10 edges by DFS")
     void GraphA_dfs_1() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
         Set<Integer> expectedSet = new HashSet<>(); // Expected set [1, 10] for vertex "1"
         expectedSet.add(1);
         expectedSet.add(10);
@@ -52,7 +53,7 @@ class GraphATest {
     @Test
     @DisplayName("Test full-linked graph with 1000 elements by DFS")
     void GraphA_dfs_2() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
         Set<Integer> expectedSet = new HashSet<>(); // Expected set [1, 2, ... 1000] for vertex "1"
         for (int i = 1; i <= 1000; i++) {
             expectedSet.add(i);
@@ -69,7 +70,7 @@ class GraphATest {
     @Test
     @DisplayName("Test graph with 10 elements without edges by BFS")
     void GraphA_bfs_0() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
         Set<Integer> expectedSet = new HashSet<>(); // Expected set [1] for vertex "1"
         expectedSet.add(1);
 
@@ -83,7 +84,7 @@ class GraphATest {
     @Test
     @DisplayName("Test graph with 10 elements with 10 edges by BFS")
     void GraphA_bfs_1() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
         Set<Integer> expectedSet = new HashSet<>(); // Expected set [1, 10] for vertex "1"
         expectedSet.add(1);
         expectedSet.add(10);
@@ -102,7 +103,7 @@ class GraphATest {
     @Test
     @DisplayName("Test full-linked graph with 1000 elements by BFS")
     void GraphA_bfs_2() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
         Set<Integer> expectedSet = new HashSet<>(); // Expected set [1, 2, ... 1000] for vertex "1"
         for (int i = 1; i <= 1000; i++) {
             expectedSet.add(i);
@@ -120,7 +121,7 @@ class GraphATest {
     @DisplayName("Test #1 algorithm Dijkstra's")
         // https://www.baeldung.com/wp-content/uploads/2017/01/step8.png
     void GraphA_dijkstra_0() throws GraphException {
-        Graph<String> graph = new Graph<>();
+        Graph<String> graph = new MatrixGraph<>();
 
         graph.addVertex("A");
         graph.addVertex("B");
@@ -145,7 +146,7 @@ class GraphATest {
     @DisplayName("Test #2 algorithm Dijkstra's")
         // https://s3.ap-south-1.amazonaws.com/s3.studytonight.com/tutorials/uploads/pictures/1627292679-103268.png
     void GraphA_dijkstra_1() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
 
         graph.addVertex(0);
         graph.addVertex(1);
@@ -176,7 +177,7 @@ class GraphATest {
     @Test
     @DisplayName("Test algorithm Dijkstra's with non-linked graph")
     void GraphA_dijkstra_3() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
 
         for (int i = 1; i <= 10; i++) {
             graph.addVertex(i);
@@ -188,7 +189,7 @@ class GraphATest {
     @Test
     @DisplayName("Test algorithm Dijkstra's with full-linked graph")
     void GraphA_dijkstra_4() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
 
         for (int i = 1; i <= 100; i++) {
             graph.addVertex(i);
@@ -206,7 +207,7 @@ class GraphATest {
     @Test
     @DisplayName("Test algorithm Dijkstra's with full-linked graph with 1000 elements")
     void GraphA_dijkstra_5() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
 
         for (int i = 1; i <= 1000; i++) {
             graph.addVertex(i);
@@ -223,28 +224,28 @@ class GraphATest {
 
 
     @Test
-    @DisplayName("Test algorithm Dijkstra's with full-linked graph with 5000 elements")
+    @DisplayName("Test algorithm Dijkstra's with full-linked graph with 2000 elements")
     void GraphA_dijkstra_6() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
 
-        for (int i = 1; i <= 5000; i++) {
+        for (int i = 1; i <= 2000; i++) {
             graph.addVertex(i);
         }
 
-        for (int i = 1; i <= 5000; i++) {
-            for (int j = 1; j <= 5000; j++) {
+        for (int i = 1; i <= 2000; i++) {
+            for (int j = 1; j <= 2000; j++) {
                 graph.addEdge(i, j, i + j);
             }
         }
 
-        Assertions.assertEquals(5001, GraphAlgorithmsA.dijkstra(graph, 1, 5000));
+        Assertions.assertEquals(2001, GraphAlgorithmsA.dijkstra(graph, 1, 2000));
     }
 
 
     @Test
     @DisplayName("Test #1 algorithm Kruskal's")
     void GraphA_kruskal_0() throws GraphException {
-        Graph<Integer> graph = new Graph<>();
+        Graph<Integer> graph = new MatrixGraph<>();
 
         graph.addVertex(0);
         graph.addVertex(1);
