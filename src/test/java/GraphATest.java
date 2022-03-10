@@ -284,6 +284,23 @@ class GraphATest {
         graph.addEdge(8, 7, 7);
 
         System.out.println(GraphAlgorithmsA.kruskal(graph));
+    }
 
+    @Test
+    @DisplayName("Test #1 algorithm Floyd-Warshall's")
+    void GraphA_floydWarshall_0() throws GraphException {
+        Graph<Integer> graph = new MatrixGraph<>();
+
+        graph.addVertex(0);
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+
+        graph.addEdge(0, 1, 5);
+        graph.addEdge(1, 2, 3);
+        graph.addEdge(2, 3, 1);
+        graph.addEdge(0,3, 10);
+
+        System.out.println(GraphAlgorithmsA.floydWarshall(graph));
     }
 }

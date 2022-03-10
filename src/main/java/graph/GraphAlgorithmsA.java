@@ -267,4 +267,72 @@ public class GraphAlgorithmsA {
         return spanningGraph;
     }
 
+    public static <T> List<Edge<T>> floydWarshall(Graph<T> graph) throws GraphException {
+        if (graph.containNegativeEdge()) {
+            throw new GraphException("Graph cannot contain negative edge");
+        }
+
+
+        // Create matrix
+        List<ArrayList<Integer>> matrix = new ArrayList<>();
+        List<T> vertexNames = graph.getVertexNames();
+        for(int i = 0; i < vertexNames.size(); i++) {
+            ArrayList<Integer> row = new ArrayList<>();
+            for(int j = 0; j < vertexNames.size(); j++) {
+                row.add(Integer.MAX_VALUE);
+            }
+
+            matrix.add(row);
+        }
+
+        // Initial edges
+        List<Edge<T>> edgeList = graph.getAllEdges();
+        for (Edge<T> edge : edgeList) {
+            int indexSrc = vertexNames.indexOf(edge.src);
+            int indexDest = vertexNames.indexOf(edge.dest);
+            matrix.get(indexSrc).set(indexDest, edge.weight);
+        }
+
+        // Initial positive infinitive
+        for (List<Integer> row : matrix) {
+            for(int i = 0; i < row.size(); i++) {
+                if (row.get(i) == 0) {
+                    row.set(i, Integer.MAX_VALUE);
+                }
+            }
+        }
+
+
+        // Algorithm body
+        for(int k = 0; k < vertexNames.size(); k++) {
+            for(int i = 0; i < vertexNames.size(); i++) {
+                for(int j = 0; j < vertexNames.size(); j++) {
+                    int oldValue = matrix.get(i).get(j);
+                    int newValue = matrix.get(i).get(k) + matrix.get(k).get(j);
+
+                    if(newValue < 0) { // More than maxValue
+                        continue;
+                    }
+
+                    if (newValue < oldValue) {
+                        matrix.get(i).set(j, matrix.get(i).get(k) + matrix.get(k).get(j));
+                    }
+                }
+            }
+        }
+
+        // Represent result
+        List<Edge<T>> result = new ArrayList<>();
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix.size(); j++) {
+                int value = matrix.get(i).get(j);
+                if (value != Integer.MAX_VALUE) {
+                    result.add(
+                            new Edge<>(vertexNames.get(i), vertexNames.get(j), value)
+                    );
+                }
+            }
+        }
+        return result;
+    }
 }
