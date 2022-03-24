@@ -3,7 +3,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 class GraphATest {
@@ -13,6 +15,23 @@ class GraphATest {
     void GraphA_test_0() {
     }
 
+
+    @Test
+    @DisplayName("Equals test")
+    void GraphA_equals_0() {
+        Graph<Integer> graphA = new MatrixGraph<>();
+        graphA.addVertex(1);
+        graphA.addVertex(2);
+        graphA.addEdge(1, 2, 10);
+
+
+        Graph<Integer> graphB = new MatrixGraph<>();
+        graphB.addVertex(1);
+        graphB.addVertex(2);
+        graphB.addEdge(1, 2, 10);
+
+        Assertions.assertTrue(graphA.equals(graphB));
+    }
 
     @Test
     @DisplayName("Test graph with 10 elements without edges by DFS")
@@ -242,7 +261,7 @@ class GraphATest {
     @Test
     @DisplayName("Test #1 algorithm Kruskal's")
     void GraphA_kruskal_0() {
-        Graph<Integer> graph = new MatrixGraph<>();
+        Graph<Integer> graph = new ListGraph<>();
 
         graph.addVertex(0);
         graph.addVertex(1);
@@ -283,6 +302,27 @@ class GraphATest {
         graph.addEdge(8, 6, 6);
         graph.addEdge(8, 7, 7);
 
+        Graph<Integer> expected = new ListGraph<>();
+        expected.addVertex(0);
+        expected.addVertex(1);
+        expected.addVertex(2);
+        expected.addVertex(3);
+        expected.addVertex(4);
+        expected.addVertex(5);
+        expected.addVertex(6);
+        expected.addVertex(7);
+        expected.addVertex(8);
+
+        expected.addEdge(0, 1, 4);
+        expected.addEdge(0, 7, 8);
+        expected.addEdge(2, 8, 2);
+        expected.addEdge(2, 5, 4);
+        expected.addEdge(2, 3, 7);
+        expected.addEdge(3, 4, 9);
+        expected.addEdge(5, 6, 2);
+        expected.addEdge(6, 7, 1);
+
+        Assertions.assertTrue(GraphAlgorithmsA.kruskal(graph).equals(expected));
         System.out.println(GraphAlgorithmsA.kruskal(graph));
     }
 
@@ -301,6 +341,14 @@ class GraphATest {
         graph.addEdge(2, 3, 1);
         graph.addEdge(0,3, 10);
 
-        System.out.println(GraphAlgorithmsA.floydWarshall(graph));
+        List<Edge<Integer>> expected = new ArrayList<>();
+        expected.add(new Edge<>(0, 1, 5));
+        expected.add(new Edge<>(0, 2, 8));
+        expected.add(new Edge<>(0, 3, 9));
+        expected.add(new Edge<>(1, 2, 3));
+        expected.add(new Edge<>(1, 3, 4));
+        expected.add(new Edge<>(2, 3, 1));
+
+        Assertions.assertEquals(expected, GraphAlgorithmsA.floydWarshall(graph));
     }
 }

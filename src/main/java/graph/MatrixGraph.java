@@ -314,4 +314,17 @@ public class MatrixGraph<T> implements Graph<T> {
     public String toString() {
         return stringAdjacencyMatrix();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MatrixGraph<T> that = (MatrixGraph<T>) o;
+
+        HashSet<Edge<T>> a = new HashSet<>(this.getAllEdges());
+        HashSet<Edge<T>> b = new HashSet<>(that.getAllEdges());
+        return Objects.equals(a, b);
+    }
+
 }

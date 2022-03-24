@@ -148,6 +148,12 @@ public class GraphAlgorithmsA {
         return dijkstra(graph, srcVertex).get(destVertex);
     }
 
+    /**
+     * Алгоритм Крускала. Алгоритм поиска минимального остовного графа.
+     * @param graph Граф
+     * @param <T> Тип данных вершин
+     * @return Минимальный оставной граф
+     */
     public static <T> Graph<T> kruskal(Graph<T> graph) {
         Graph<T> spanningGraph = graph.getNewInstance();
 
@@ -238,6 +244,12 @@ public class GraphAlgorithmsA {
         return -1;
     }
 
+    /**
+     * Алгоритм Прима. Алгоритм поиска минимального остовного графа.
+     * @param graph Граф
+     * @param <T> Тип данных имен вершин
+     * @return Минимальный оставной граф
+     */
     public static <T> Graph<T> prim(Graph<T> graph) {
         Graph<T> spanningGraph = graph.getNewInstance();
         for(T vertex : graph.getVertexNames()) {
@@ -267,6 +279,13 @@ public class GraphAlgorithmsA {
         return spanningGraph;
     }
 
+    /**
+     * Алгоритм Флойда-Уоршелла. Алгоритм нахождения длин кратчайших путей между всеми парами вершин во взвешенном ориентированном графе
+     * @param graph Граф
+     * @param <T> Тип данных имен вершин
+     * @return Список длин кратчайших путей между всеми парами вершин.
+     * @throws GraphException Граф имеет отрицательные веса
+     */
     public static <T> List<Edge<T>> floydWarshall(Graph<T> graph) throws GraphException {
         if (graph.containNegativeEdge()) {
             throw new GraphException("Graph cannot contain negative edge");

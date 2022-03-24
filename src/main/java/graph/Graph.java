@@ -2,6 +2,10 @@ package graph;
 
 import java.util.List;
 
+/**
+ * Интерфейся для ориентированных графов. Функций, описанных ниже, достаточно для реализации всех алгоритмов на графах.
+ * @param <T> Тип данных имен вершин
+ */
 public interface Graph<T> {
 
     /**
@@ -118,4 +122,6 @@ public interface Graph<T> {
      * @return Строка для вывода графа
      */
     String toString();
+
+    boolean equals(Object o);
 }
