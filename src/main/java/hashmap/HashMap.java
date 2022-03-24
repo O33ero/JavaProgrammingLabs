@@ -1,5 +1,7 @@
 package hashmap;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class HashMap<K, V> {
@@ -103,9 +105,9 @@ public class HashMap<K, V> {
     /**
      * Ребалансировка словаря, если уровень загружености выше установленного.
      */
-    private void rebalanced() {
+    private void rebalanced(boolean forced) {
         float actualLoadFactor = getActualLoad();
-        if (actualLoadFactor < loadFactor) {
+        if (actualLoadFactor < loadFactor && !forced) {
             return;
         }
 
@@ -120,7 +122,7 @@ public class HashMap<K, V> {
             Node<K, V> node = table[i];
             while (node != null) {
                 int index = indexOf(node.getKey());
-                putNodeByIndex(node, index, true, newTable);
+                putNodeByIndex(new Node<>(node.getHash(), node.getKey(), node.getValue()), index, true, newTable);
                 addedNodesCount++;
                 node = node.getNext();
             }
@@ -142,7 +144,7 @@ public class HashMap<K, V> {
         int index = indexOf(key);
         Node<K, V> node = new Node<>(key.hashCode(), key, value);
         countOfElements += putNodeByIndex(node, index, true, table);
-        rebalanced();
+        rebalanced(false);
     }
 
     /**
@@ -156,11 +158,11 @@ public class HashMap<K, V> {
         int index = indexOf(key);
         Node<K, V> node = new Node<>(key.hashCode(), key, value);
         countOfElements += putNodeByIndex(node, index, false, table);
-        rebalanced();
+        rebalanced(false);
     }
 
     /**
-     * Возвращает значение по ключу
+     * Возвращает значение по ключу. Если ключ отсутствует, будет брошено исключение {@code HashMapException}.
      * @param key Ключ
      * @return Значение
      */
@@ -179,6 +181,11 @@ public class HashMap<K, V> {
         throw new HashMapException("Key " + key + " does not exist");
     }
 
+    /**
+     * Возвращает значение по ключи или null, если такого ключа не существует
+     * @param key Ключ
+     * @return Значение или null, если ключа не существует
+     */
     public V getOrNull(K key) {
         try {
             return get(key);
@@ -187,18 +194,102 @@ public class HashMap<K, V> {
         }
     }
 
+    /**
+     * Проверят на наличие ключа
+     * @param key Ключ
+     * @return Результат проверки
+     */
+    public boolean isContain(K key) {
+        return this.getOrNull(key) != null;
+    }
+
+    /**
+     * Удаляет ключ-значение по ключу
+     * @param key Ключ
+     * @return true, если элемент был удален, и false, в обратном случае.
+     */
+    public boolean remove(K key) {
+        if (!isContain(key)) { // key does not exist
+            return false;
+        }
+
+        int index = indexOf(key);
+        Node<K, V> cur = table[index];
+        Node<K, V> prev = null;
+        if (cur.getHash() == key.hashCode() &&
+            cur.getKey().equals(key)) { // first node
+            table[index] = cur.getNext();
+            countOfElements--;
+            return true;
+        } else {
+            prev = cur;
+            cur = prev.getNext();
+            while(cur != null) {
+                if (cur.getHash() == key.hashCode() &&
+                    cur.getKey().equals(key)) {
+                    prev.setNext(cur.getNext());
+                    countOfElements--;
+                    return true;
+                } else {
+                    prev = cur;
+                    cur = prev.getNext();
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Застявляет перехешировать весь {@code HashMap}, чтобы понизить уровень загруженности
+     */
+    public void rehashing() {
+        rebalanced(true);
+    }
+
+    /**
+     * Возвращает список всех узлов (в строковом формате) ((функция только для тестов))
+     * @return Список узлов
+     */
+    public List<String> getAllNodes() {
+        List<String> result = new ArrayList<>();
+        for(Node<K, V> node : table) {
+            Node<K, V> temp = node;
+            while(temp != null) {
+                result.add(temp.toString());
+                temp = temp.getNext();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Возвращает текущий коэффициент загруженности
+     * @return Текущий коэффициент загруженности
+     */
     public float getActualLoad() {
         return ((float) countOfElements) / capacity;
     }
 
+    /**
+     * Возвращает коэффициент загружености, указанный при инициализации (или значение по умолчанию)
+     * @return Коэффициент загруженности
+     */
     public float getInitLoad() {
         return loadFactor;
     }
 
+    /**
+     * Получение числа элементов
+     * @return Число элементов
+     */
     public int getSize() {
         return countOfElements;
     }
 
+    /**
+     * Установить новый коэффициент загружености
+     * @param loadFactor Новый коэффициент загруженности
+     */
     public void setLoadFactor(float loadFactor) {
         this.loadFactor = loadFactor;
     }
