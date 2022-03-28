@@ -1,6 +1,6 @@
 package hashmap;
 
-public class HashMapException extends RuntimeException{
+class HashMapException extends RuntimeException{
     HashMapException() {
         super();
     }

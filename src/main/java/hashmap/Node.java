@@ -2,7 +2,7 @@ package hashmap;
 
 import java.util.Objects;
 
-public class Node<K, V> {
+class Node<K, V> {
     private int hash;
     private K key;
     private V value;

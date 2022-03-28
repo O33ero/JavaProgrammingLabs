@@ -1,11 +1,8 @@
 import hashmap.HashMap;
-import hashmap.HashMapException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.Map;
 
 class HashMapTest {
 
