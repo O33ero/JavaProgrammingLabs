@@ -17,4 +17,16 @@ public class Utils {
         return random.nextInt(max - min) + min;
     }
 
+
+    static class TestCases {
+        String string;
+        String pattern;
+        Integer[] expected;
+
+        TestCases(String s, String p, Integer[] e) {
+            string = s;
+            pattern = p;
+            expected = e;
+        }
+    }
 }
