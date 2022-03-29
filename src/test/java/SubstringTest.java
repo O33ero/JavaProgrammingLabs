@@ -139,4 +139,28 @@ class SubstringTest {
         //    ...
         Assertions.assertArrayEquals(testCases[8].expected, Substring.boyerMoore(testCases[8].string, testCases[8].pattern));
     }
+
+    @Test
+    @DisplayName("BoyerMoore: All in one")
+    void Substring_boyerMoore_allInOne() {
+        for(Utils.TestCases test : testCases) {
+            Assertions.assertArrayEquals(test.expected, Substring.boyerMoore(test.string, test.pattern));
+        }
+    }
+
+    @Test
+    @DisplayName("RabinKarp: All in one (.polynomialHash)")
+    void Substring_rabinKarp_allInOne() {
+        for(Utils.TestCases test : testCases) {
+            Assertions.assertArrayEquals(test.expected, Substring.rabinKarp(test.string, test.pattern));
+        }
+    }
+
+    @Test
+    @DisplayName("RabinKarp: All in one (.hashCode)")
+    void Substring_rabinKarp_allInOne_hashCode() {
+        for(Utils.TestCases test : testCases) {
+            Assertions.assertArrayEquals(test.expected, Substring.rabinKarp(test.string, test.pattern, String::hashCode));
+        }
+    }
 }
