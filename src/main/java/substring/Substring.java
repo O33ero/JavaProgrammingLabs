@@ -21,11 +21,16 @@ public class Substring {
      * @return Массив с индексами начала подстрок в строке или пустой массив, если строка не содержит искомой подстроки.
      */
     public static Integer[] boyerMoore(String string, String substring) {
+        Objects.requireNonNull(string);
+        Objects.requireNonNull(substring);
         int patternLength = substring.length();
         int stringLength = string.length();
 
-        if (patternLength > stringLength) {
+        if (patternLength > stringLength || stringLength == 0) {
             return new Integer[0];
+        }
+        if (patternLength == 0) {
+            throw new IllegalArgumentException("Pattern length should be > 0");
         }
 
         Map<Character, Integer> offsetMap = new HashMap<>();
@@ -83,31 +88,31 @@ public class Substring {
 
     /**
      * <p>
-     *     Нахождение подстроки алгоритмом Рабина-Карпа.
+     * Нахождение подстроки алгоритмом Рабина-Карпа.
      * </p>
      * <p>
-     *     Алгоритм основывается на вычисление хеш функции для каждой подстроки (от 0 до n - m символа), и при совпадении значений хешей,
-     *     делается вывод что в строке имеется искомая подстрока.
+     * Алгоритм основывается на вычисление хеш функции для каждой подстроки (от 0 до n - m символа), и при совпадении значений хешей,
+     * делается вывод что в строке имеется искомая подстрока.
      * </p>
      * <p>
-     *     Естественно, всё упирается в "эффективность" хеш функции. Если хеш функция может содержать коллизии (например, стандартная хеш-функция java {@code hashCode}),
-     *     то такая функция не может иметь ложноотрицательные, но может иметь ложноположительные результаты, что, очевидно, не есть хорошо. Чтобы гарантировать отсутствие
-     *     коллизий, нужно расширить диапазон возможных значений хеша больше чем {@link Integer} (а лучше больше чем {@link Long}). Для этого лучше использовать {@link BigInteger},
-     *     которые имеет гораздо-гораздо больший диапазон значений. В качестве хеш функции можно использовать полиномиальный хеш, так как он самый простой в реализации
-     *     (особенно с {@link BigInteger}).
+     * Естественно, всё упирается в "эффективность" хеш функции. Если хеш функция может содержать коллизии (например, стандартная хеш-функция java {@code hashCode}),
+     * то такая функция не может иметь ложноотрицательные, но может иметь ложноположительные результаты, что, очевидно, не есть хорошо. Чтобы гарантировать отсутствие
+     * коллизий, нужно расширить диапазон возможных значений хеша больше чем {@link Integer} (а лучше больше чем {@link Long}). Для этого лучше использовать {@link BigInteger},
+     * которые имеет гораздо-гораздо больший диапазон значений. В качестве хеш функции можно использовать полиномиальный хеш, так как он самый простой в реализации
+     * (особенно с {@link BigInteger}).
      * </p>
      * <p>
-     *     На тестах можно увидеть, что реализация через хеш с использованием {@code String.hashCode()} работает немного быстрее, чем через полиномиальный хеш
-     *     (~1-2 ms против ~5-7 ms). На больших текстах эта разница будет сильно расти. Но реализация через {@code String.hashCode()} рано или поздно даст ошибку,
-     *     в отличии от полиномиального хеша (который можно еще и оптимизировать разными штуками ({@code например, динамическим программированием}))
+     * На тестах можно увидеть, что реализация через хеш с использованием {@code String.hashCode()} работает немного быстрее, чем через полиномиальный хеш
+     * (~1-2 ms против ~5-7 ms). На больших текстах эта разница будет сильно расти. Но реализация через {@code String.hashCode()} рано или поздно даст ошибку,
+     * в отличии от полиномиального хеша (который можно еще и оптимизировать разными штуками ({@code например, динамическим программированием}))
      * </p>
      *
      * <p>
-     *     Нахождение подстроки алгоритмом Рабина-Карпа с хешем ввиде функционального интерфейса {@link ToIntFunction}.
+     * Нахождение подстроки алгоритмом Рабина-Карпа с хешем ввиде функционального интерфейса {@link ToIntFunction}.
      * </p>
      * <p>
-     *     В качестве хеш-функции используется функциональный интерфейс {@link ToIntFunction}. В него можно передать любую функцию, которая будет превращать некоторый
-     *     тип данных (в нашем случае {@code String}) в {@code Integer}. В тестах имеется пример с применением в качестве функции {@code String.hashCode()}
+     * В качестве хеш-функции используется функциональный интерфейс {@link ToIntFunction}. В него можно передать любую функцию, которая будет превращать некоторый
+     * тип данных (в нашем случае {@code String}) в {@code Integer}. В тестах имеется пример с применением в качестве функции {@code String.hashCode()}
      * </p>
      *
      * @param string       Исходная строка
@@ -116,11 +121,19 @@ public class Substring {
      * @return Массив с индексами начала подстрок в строке или пустой массив, если строка не содержит искомой подстроки.
      */
     public static Integer[] rabinKarp(String string, String substring, ToIntFunction<String> hashFunction) {
+        Objects.requireNonNull(string);
+        Objects.requireNonNull(substring);
+        Objects.requireNonNull(hashFunction);
         int substringLength = substring.length();
         int stringLength = string.length();
-        if (substringLength > stringLength) {
+
+        if (substringLength > stringLength || stringLength == 0) {
             return new Integer[0];
         }
+        if (substringLength == 0) {
+            throw new IllegalArgumentException("Pattern length should be > 0");
+        }
+
         Integer hashSubstring = hashFunction.applyAsInt(substring);
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i <= stringLength - substringLength; i++) {
@@ -139,7 +152,7 @@ public class Substring {
      * Нахождение подстроки алгоритмом Рабина-Карпа с полиномиальным хешем.
      * </p>
      * <p>
-     * Алгоритм используется реализацию хеша через полином.
+     * Алгоритм использует реализацию хеша через полином.
      * </p>
      *
      * @param string    Исходная строка
@@ -147,10 +160,16 @@ public class Substring {
      * @return Массив с индексами начала подстрок в строке или пустой массив, если строка не содержит искомой подстроки.
      */
     public static Integer[] rabinKarp(String string, String substring) {
+        Objects.requireNonNull(string);
+        Objects.requireNonNull(substring);
         int substringLength = substring.length();
         int stringLength = string.length();
-        if (substringLength > stringLength) {
+
+        if (substringLength > stringLength || stringLength == 0) {
             return new Integer[0];
+        }
+        if (substringLength == 0) {
+            throw new IllegalArgumentException("Pattern length should be > 0");
         }
 //        BigInteger prime = BigInteger.probablePrime(new Random().nextInt(16 - 3) + 3, new Random()); // Random number with length in range [3; 16] bit
         BigInteger fixPrime = BigInteger.valueOf(47);
@@ -187,23 +206,41 @@ public class Substring {
         return result;
     }
 
-    /** ------------------------Алгоритм Рабина-Карпа-------------------- **/
+    /** ------------------------Алгоритм Кнута-Морриса-Пратта-------------------- **/
 
-    public static Integer[] knuthMorrisPratt(String string, String substring) {
-        int substringLength = substring.length();
+    /**
+     * <p>
+     * Нахождение подстроки алгоритмом Кнута-Морриса-Пратта с полиномиальным хешем.
+     * </p>
+     * <p>
+     * Алгоритм использует таблицу смещений по префиксу-суффиксу.
+     * </p>
+     *
+     * @param string Строка
+     * @param pattern Искомая подстрока
+     * @return Массив с индексами начала подстрок в строке или пустой массив, если строка не содержит искомой подстроки.
+     */
+    public static Integer[] knuthMorrisPratt(String string, String pattern) {
+        Objects.requireNonNull(string);
+        Objects.requireNonNull(pattern);
+        int patternLength = pattern.length();
         int stringLength = string.length();
-        if (substringLength > stringLength) {
+
+        if (patternLength > stringLength || stringLength == 0) {
             return new Integer[0];
         }
+        if (patternLength == 0) {
+            throw new IllegalArgumentException("Pattern length should be > 0");
+        }
         List<Integer> result = new ArrayList<>();
-        Integer[] prefTable = getPrefixTableKnuthMorrisPratt(substring);
+        int[] prefTable = getPrefixTableKnuthMorrisPratt(pattern);
         int pointer = 0;
-        for(int i = 0; i < stringLength; i++) {
-            while(true) {
-                if (substring.charAt(pointer) == string.charAt(i)) {
+        for (int i = 0; i < stringLength; i++) {
+            while (true) {
+                if (pattern.charAt(pointer) == string.charAt(i)) {
                     pointer++;
-                    if (pointer == substringLength) {
-                        i = i + 1 - substringLength;
+                    if (pointer == patternLength) {
+                        i = i + 1 - patternLength;
                         result.add(i);
                         pointer = 0;
                     }
@@ -219,12 +256,18 @@ public class Substring {
         return result.toArray(new Integer[0]);
     }
 
-    private static Integer[] getPrefixTableKnuthMorrisPratt(String str) {
-        Integer[] table = new Integer[str.length()];
+    /**
+     * Вспомогательная функция алгоритма Кнута-Морриса-Пратта.
+     * Функция возвращает таблицу смещений по префиксу-суффиксу.
+     * @param str Строка
+     * @return Таблица смещений
+     */
+    private static int[] getPrefixTableKnuthMorrisPratt(String str) {
+        int[] table = new int[str.length()];
         int k = 0;
-        for(int i = 1; i < str.length(); i++) {
-            while(k > 0 && str.charAt(i) != str.charAt(k)) {
-                k = table[i - 1];
+        for (int i = 1; i < str.length(); i++) {
+            while (k > 0 && str.charAt(i) != str.charAt(k)) {
+                k = table[k - 1];
             }
             if (str.charAt(i) == str.charAt(k)) {
                 k++;
