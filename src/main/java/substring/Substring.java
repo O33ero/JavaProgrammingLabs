@@ -186,4 +186,52 @@ public class Substring {
         }
         return result;
     }
+
+    /** ------------------------Алгоритм Рабина-Карпа-------------------- **/
+
+    public static Integer[] knuthMorrisPratt(String string, String substring) {
+        int substringLength = substring.length();
+        int stringLength = string.length();
+        if (substringLength > stringLength) {
+            return new Integer[0];
+        }
+        List<Integer> result = new ArrayList<>();
+        Integer[] prefTable = getPrefixTableKnuthMorrisPratt(substring);
+        int pointer = 0;
+        for(int i = 0; i < stringLength; i++) {
+            while(true) {
+                if (substring.charAt(pointer) == string.charAt(i)) {
+                    pointer++;
+                    if (pointer == substringLength) {
+                        i = i + 1 - substringLength;
+                        result.add(i);
+                        pointer = 0;
+                    }
+                    break;
+                }
+                if (pointer == 0) {
+                    break;
+                }
+                pointer = prefTable[pointer - 1];
+            }
+        }
+
+        return result.toArray(new Integer[0]);
+    }
+
+    private static Integer[] getPrefixTableKnuthMorrisPratt(String str) {
+        Integer[] table = new Integer[str.length()];
+        int k = 0;
+        for(int i = 1; i < str.length(); i++) {
+            while(k > 0 && str.charAt(i) != str.charAt(k)) {
+                k = table[i - 1];
+            }
+            if (str.charAt(i) == str.charAt(k)) {
+                k++;
+            }
+            table[i] = k;
+        }
+
+        return table;
+    }
 }

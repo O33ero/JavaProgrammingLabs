@@ -163,4 +163,12 @@ class SubstringTest {
             Assertions.assertArrayEquals(test.expected, Substring.rabinKarp(test.string, test.pattern, String::hashCode));
         }
     }
+
+    @Test
+    @DisplayName("KnuthMorrisPratt: All in one")
+    void Substring_knuthMorrisPratt_allInOne() {
+        for(Utils.TestCases test : testCases) {
+            Assertions.assertArrayEquals(test.expected, Substring.knuthMorrisPratt(test.string, test.pattern));
+        }
+    }
 }
