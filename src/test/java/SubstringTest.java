@@ -98,4 +98,23 @@ class SubstringTest {
         Assertions.assertThrows(NullPointerException.class, () ->
                 Substring.knuthMorrisPratt(null, null));
     }
+
+    @Test
+    @DisplayName("FiniteAutomata: All in one")
+    void Substring_finiteAutomata_allInOne() {
+        for(Utils.TestCases test : testCases) {
+            Assertions.assertArrayEquals(test.expected, Substring.finiteAutomata(test.string, test.pattern));
+        }
+        Assertions.assertThrows(NullPointerException.class, () ->
+                Substring.finiteAutomata("null", null));
+        Assertions.assertThrows(NullPointerException.class, () ->
+                Substring.finiteAutomata(null, "null"));
+        Assertions.assertThrows(NullPointerException.class, () ->
+                Substring.finiteAutomata(null, null));
+    }
+
+    @Test
+    void Substring_finiteAutomata_test() {
+        Assertions.assertArrayEquals(new Integer[]{0, 9, 12},Substring.finiteAutomata("AABAACAADAABAABA", "AABA"));
+    }
 }

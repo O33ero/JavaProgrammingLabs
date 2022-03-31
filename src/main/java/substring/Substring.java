@@ -277,4 +277,81 @@ public class Substring {
 
         return table;
     }
+
+    /** ------------------------ Алгоритм на конечном автомате -------------------- **/
+
+    public static Integer[] finiteAutomata(String string, String pattern) {
+        Objects.requireNonNull(string);
+        Objects.requireNonNull(pattern);
+        int patternLength = pattern.length();
+        int stringLength = string.length();
+
+        if (patternLength > stringLength || stringLength == 0) {
+            return new Integer[0];
+        }
+        if (patternLength == 0) {
+            throw new IllegalArgumentException("Pattern length should be > 0");
+        }
+
+        // get state table
+        char[] chars = pattern.toCharArray();
+        Set<Character> charsSet = new HashSet<>();
+        for(char c : chars) {
+            charsSet.add(c);
+        }
+        List<Character> uniqueCharsList = new ArrayList<>(charsSet);
+        int uniqueChars = charsSet.size();
+
+        int[][] stateTable = new int[patternLength + 1][uniqueChars];
+
+        for(int state = 0; state < patternLength; state++) {
+            for(int i = 0; i < uniqueChars; i++) {
+                stateTable[state][i] = getNextState(pattern, state, uniqueCharsList.get(i));
+            }
+        }
+
+        // search substring
+        List<Integer> result = new ArrayList<>();
+        int state = 0;
+        for(int i = 0; i < stringLength; i++) {
+            if (!charsSet.contains(string.charAt(i))) {
+                state = 0;
+                continue;
+            }
+
+            state = stateTable[state][uniqueCharsList.indexOf(string.charAt(i))];
+            if (state == patternLength) {
+                i = i - patternLength + 1;
+                result.add(i);
+                state = 0;
+            }
+        }
+
+        return result.toArray(new Integer[0]);
+    }
+
+    private static int getNextState(String str, int state, char ch) {
+
+        // Если символ совпадает с ожидаемым символом, его состояние становится на 1 больше предыдущего состояния
+        if (state < str.length() && ch == str.charAt(state)) {
+            return state + 1;
+        }
+
+        for(int newState = state; newState > 0; newState--) {
+            if (str.charAt(newState - 1) == ch) {
+                int i;
+                for(i = 0; i < newState - 1; i++) {
+                    if (str.charAt(i) != str.charAt(state - newState + 1 + i)) {
+                        break;
+                    }
+                }
+                if (i == newState - 1) {
+                    return newState;
+                }
+            }
+        }
+        // Не удалось вернутся на состяние [1:state] поэтому необходимо вернутся в начало автомата
+        return 0;
+    }
+
 }
