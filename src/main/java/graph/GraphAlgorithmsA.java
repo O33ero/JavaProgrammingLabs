@@ -116,6 +116,11 @@ public class GraphAlgorithmsA {
             }
         }
 
+        for(T key : shortestPathWeight.keySet()) {
+            if (shortestPathWeight.get(key) == Integer.MAX_VALUE) {
+                shortestPathWeight.put(key, -1);
+            }
+        }
         return shortestPathWeight;
     }
 
@@ -128,7 +133,7 @@ public class GraphAlgorithmsA {
      * @param srcVertex  Исходная вершина
      * @param destVertex Конечная вершина
      * @param <T>        Тип данных, обозначающих имя вершины
-     * @return Значение веса кратчайшего пути от {@code srcVertex} до {@code destVertex}
+     * @return Значение веса кратчайшего пути от {@code srcVertex} до {@code destVertex} или -1, если пути не существует
      * @throws GraphException Граф не должен содержать отрицательных весов, вершины {@code srcVertex} и {@code destVertex} должны принадлежать графу.
      */
     public static <T> int dijkstra(Graph<T> graph, T srcVertex, T destVertex) throws GraphException {

@@ -114,6 +114,21 @@ public abstract class Graph<T> {
     public abstract List<Edge<T>> getEdges(T vertex);
 
     /**
+     * Возвращает ребро, для котрого определен источник и конец
+     * @param src Истчник
+     * @param dest Конец
+     * @return Ребро из источника в конец или null, если такой вершины не существует
+     */
+   public Edge<T> getEdge(T src, T dest) {
+       for(Edge<T> edge : getEdges(src)) {
+           if (edge.src.equals(src) && edge.dest.equals(dest)) {
+               return edge;
+           }
+       }
+       return null;
+   }
+
+    /**
      * Возвращает список всех имен вершин в графе
      * @return Список имен вершин
      */
