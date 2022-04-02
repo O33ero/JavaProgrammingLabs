@@ -1,12 +1,16 @@
 package graph;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Интерфейся для ориентированных графов. Функций, описанных ниже, достаточно для реализации всех алгоритмов на графах.
  * @param <T> Тип данных имен вершин
  */
-public interface Graph<T> {
+public abstract class Graph<T> {
+    final List<T> vertexNames = new ArrayList<>(); // All vertex names
 
     /**
      * Добавляет новую вершину
@@ -14,7 +18,7 @@ public interface Graph<T> {
      * @param vertexName Имя вершины
      * @return Результат добавления
      */
-    boolean addVertex(T vertexName);
+    public abstract boolean addVertex(T vertexName);
 
     /**
      * Добавляет новое ребро с весом 1
@@ -22,7 +26,7 @@ public interface Graph<T> {
      * @param from Из
      * @param to В
      */
-    void addEdge(T from, T to);
+    public abstract void addEdge(T from, T to);
 
     /**
      * Добавляет новое ребро с весом {@code weight}
@@ -30,59 +34,63 @@ public interface Graph<T> {
      * @param to В
      * @param weight Вес
      */
-    void addEdge(T from, T to, int weight);
+    public abstract void addEdge(T from, T to, int weight);
 
     /**
      * Удаляет ребро
      * @param from Из
      * @param to В
      */
-    void removeEdge(T from, T to);
+    public abstract void removeEdge(T from, T to);
 
     /**
      * Удаляет вершину
      * @param vertex Имя вершины
      */
-    void removeVertex(T vertex);
+    public abstract void removeVertex(T vertex);
 
     /**
      * Возвращает количество вершин
      * @return Количество вершин
      */
-    int vertexCount();
+    public int vertexCount() {
+        return vertexNames.size();
+    }
 
     /**
      * Возвращает количество ребер
      * @return Количество ребер
      */
-    int edgeCount();
+    public abstract int edgeCount();
 
     /**
      * Возвращает список входящих ребер
      * @param vertex Имя вершины
      * @return Список имен вершин
      */
-    List<T> getInEdges(T vertex) throws GraphException;
+    public abstract List<T> getInEdges(T vertex) throws GraphException;
 
     /**
      * Возвращает список исходящих вершин
      * @param vertex Имя вершины
      * @return Список имен вершин
      */
-    List<T> getOutEdges(T vertex) throws GraphException;
+    public abstract List<T> getOutEdges(T vertex) throws GraphException;
 
     /**
      * Проверяет граф на наличие вершины
      * @param vertex Имя вершины
      * @return Результат проверки
      */
-    boolean isContain(T vertex);
+    public boolean isContain(T vertex) {
+        return vertexNames.contains(vertex);
+    }
 
     /**
      * Проверяет граф на наличие ребер с отрицательным весом
      * @return Результат проверки
      */
-    boolean containNegativeEdge();
+    public abstract boolean containNegativeEdge();
 
     /**
      * Возвращает вес ребра или 0, если такого ребра нет
@@ -90,38 +98,51 @@ public interface Graph<T> {
      * @param to В
      * @return Вес ребра {@code from} -> {@code to}
      */
-    int getWeight(T from, T to);
+    public abstract int getWeight(T from, T to);
 
     /**
      * Возвращает список всех ребер
      * @return Список всех ребер
      */
-    List<Edge<T>> getAllEdges();
+    public abstract List<Edge<T>> getAllEdges();
 
     /**
      * Возвращает список вершин, для которых {@code vertex} является истоком.
      * @param vertex Имя вершины
      * @return Список ребер
      */
-    List<Edge<T>> getEdges(T vertex);
+    public abstract List<Edge<T>> getEdges(T vertex);
 
     /**
      * Возвращает список всех имен вершин в графе
      * @return Список имен вершин
      */
-    List<T> getVertexNames();
+    public List<T> getVertexNames() {
+        return vertexNames;
+    }
 
     /**
      * Возвращает новый объект, того же типа
      * @return Новый объект
      */
-    Graph<T> getNewInstance();
+    public abstract Graph<T> getNewInstance();
 
     /**
      * Красивый вывод графа
      * @return Строка для вывода графа
      */
-    String toString();
+    @Override
+    public abstract String toString();
 
-    boolean equals(Object o);
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Graph<T> that = (Graph<T>) o;
+
+        HashSet<Edge<T>> a = new HashSet<>(this.getAllEdges());
+        HashSet<Edge<T>> b = new HashSet<>(that.getAllEdges());
+        return Objects.equals(a, b);
+    }
 }

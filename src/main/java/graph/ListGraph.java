@@ -1,7 +1,6 @@
 package graph;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +8,7 @@ import java.util.Objects;
  * Реализация графа через списки смежности.
  * @param <T> Тип данных имен вершин
  */
-public class ListGraph<T> implements Graph<T>{
+public class ListGraph<T> extends Graph<T>{
     private final List<T> vertexNames = new ArrayList<>();
     private final List<ArrayList<Node<T>>> adjacencyList = new ArrayList<>();
 
@@ -18,8 +17,8 @@ public class ListGraph<T> implements Graph<T>{
             this.name = vertexName;
             this.weight = weight;
         }
-        public T name;
-        public int weight;
+        T name;
+        int weight;
 
         @Override
         public boolean equals(Object o) {
@@ -51,6 +50,16 @@ public class ListGraph<T> implements Graph<T>{
 
     public ListGraph() {
         // Default constructor
+    }
+
+    public ListGraph(Graph<T> graph) {
+        for(T vertex : graph.getVertexNames()) {
+            this.addVertex(vertex);
+        }
+
+        for(Edge<T> edge : graph.getAllEdges()) {
+            this.addEdge(edge.src, edge.dest, edge.weight);
+        }
     }
 
 
@@ -216,18 +225,5 @@ public class ListGraph<T> implements Graph<T>{
             }
         }
         return -1;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ListGraph<T> that = (ListGraph<T>) o;
-
-        HashSet<Edge<T>> a = new HashSet<>(this.getAllEdges());
-        HashSet<Edge<T>> b = new HashSet<>(that.getAllEdges());
-        return Objects.equals(a, b);
     }
 }

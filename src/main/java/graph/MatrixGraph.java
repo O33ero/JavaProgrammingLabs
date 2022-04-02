@@ -24,8 +24,7 @@ import java.util.*;
  * @param <T> Тип данных названий вершин
  * @see <a href=www.baeldung.com/java-graphs>baeldung.com/java-graphs</a>
  */
-public class MatrixGraph<T> implements Graph<T> {
-    final List<T> vertexNames = new ArrayList<>(); // All vertex names
+public class MatrixGraph<T> extends Graph<T> {
     final List<ArrayList<Integer>> adjacencyMatrix = new ArrayList<>();  // Adjacency Matrix (Матрица смежности)
 
 
@@ -107,6 +106,16 @@ public class MatrixGraph<T> implements Graph<T> {
             for (T vertex : collection) {
                 addVertex(vertex);
             }
+        }
+    }
+
+    public MatrixGraph(Graph<T> graph) {
+        for (T vertex : graph.getVertexNames()) {
+            this.addVertex(vertex);
+        }
+
+        for (Edge<T> edge : graph.getAllEdges()) {
+            this.addEdge(edge.src, edge.dest, edge.weight);
         }
     }
 
@@ -274,7 +283,7 @@ public class MatrixGraph<T> implements Graph<T> {
         int indexVertex = vertexNames.indexOf(vertex);
         List<Integer> vertexList = adjacencyMatrix.get(indexVertex);
 
-        for(int i = 0; i < vertexList.size(); i++) {
+        for (int i = 0; i < vertexList.size(); i++) {
             if (vertexList.get(i) != 0) {
                 result.add(new Edge<>(vertex, vertexNames.get(i), vertexList.get(i)));
             }
@@ -313,18 +322,6 @@ public class MatrixGraph<T> implements Graph<T> {
     @Override
     public String toString() {
         return stringAdjacencyMatrix();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        MatrixGraph<T> that = (MatrixGraph<T>) o;
-
-        HashSet<Edge<T>> a = new HashSet<>(this.getAllEdges());
-        HashSet<Edge<T>> b = new HashSet<>(that.getAllEdges());
-        return Objects.equals(a, b);
     }
 
 }
