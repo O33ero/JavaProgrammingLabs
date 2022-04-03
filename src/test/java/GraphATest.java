@@ -44,7 +44,7 @@ class GraphATest {
             graph.addVertex(i);
         }
 
-        Assertions.assertEquals(expectedSet, GraphAlgorithmsA.dfs(graph, 1));
+        Assertions.assertEquals(expectedSet, new HashSet<>(GraphAlgorithmsA.dfs(graph, 1)));
     }
 
     @Test
@@ -63,7 +63,7 @@ class GraphATest {
             graph.addEdge(i, 10);
         }
 
-        Assertions.assertEquals(expectedSet, GraphAlgorithmsA.dfs(graph, 1));
+        Assertions.assertEquals(expectedSet, new HashSet<>(GraphAlgorithmsA.dfs(graph, 1)));
     }
 
     @Test
@@ -80,7 +80,7 @@ class GraphATest {
                 graph.addEdge(i, j, i + j);
             }
         }
-        Assertions.assertEquals(expectedSet, GraphAlgorithmsA.dfs(graph, 1));
+        Assertions.assertEquals(expectedSet, new HashSet<>(GraphAlgorithmsA.dfs(graph, 1)));
     }
 
     @Test
@@ -199,7 +199,7 @@ class GraphATest {
             graph.addVertex(i);
         }
 
-        Assertions.assertEquals(Integer.MAX_VALUE, GraphAlgorithmsA.dijkstra(graph, 1, 10));
+        Assertions.assertEquals(-1, GraphAlgorithmsA.dijkstra(graph, 1, 10));
     }
 
     @Test

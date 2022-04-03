@@ -8,13 +8,13 @@ public class GraphAlgorithmsA {
     private GraphAlgorithmsA() {
     }
 
-    public static <T> Set<T> dfs(Graph<T> graph, T srcVertex) throws GraphException {
+    public static <T> List<T> dfs(Graph<T> graph, T srcVertex) throws GraphException {
         if (!graph.isContain(srcVertex)) {
             throw new GraphException("Vertex '" + srcVertex + "' does not exist");
         }
 
         Stack<T> stack = new Stack<>();
-        Set<T> visited = new LinkedHashSet<>();
+        List<T> visited = new ArrayList<>();
         stack.push(srcVertex);
         while (!stack.isEmpty()) {
             T cur = stack.pop();
