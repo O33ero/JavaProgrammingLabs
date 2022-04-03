@@ -16,7 +16,8 @@ public class GraphAlgorithmsB {
      * @return Списко в топологическом порядке.
      * @throws GraphException Исключение, если в графе найден цикл.
      */
-    public static <T> List<T> tarjan(Graph<T> graph) throws GraphException {
+    public static <T> List<T> tarjan(final Graph<T> graph) throws GraphException {
+        Objects.requireNonNull(graph);
         Set<T> grayVertex = new HashSet<>();
         List<T> blackVertex = new ArrayList<>();
 
@@ -57,7 +58,8 @@ public class GraphAlgorithmsB {
      * @return Списко ребер в порядке их обхода
      * @throws GraphException Если граф не может иметь эйлеровый цикл и эйлеровый путь.
      */
-    public static <T> List<Edge<T>> fleury(Graph<T> graph) throws GraphException {
+    public static <T> List<Edge<T>> fleury(final Graph<T> graph) throws GraphException {
+        Objects.requireNonNull(graph);
         Graph<T> graphOther = new MatrixGraph<>(graph);
 
         T startVertex = checkGraphForEuler(graph, false);
@@ -116,7 +118,7 @@ public class GraphAlgorithmsB {
         int allEdgesCount = graph.getAllEdges().size();
         int newEdgesCount = 0;
 
-        Stack<Edge<T>> stack = new Stack<>();
+        Deque<Edge<T>> stack = new ArrayDeque<>();
         Set<Edge<T>> visited = new HashSet<>();
         Edge<T> tempEdge = graph.getEdge(src, dest);
         graph.removeEdge(src, dest);
@@ -140,18 +142,20 @@ public class GraphAlgorithmsB {
 
     /**
      * Поиск эйлеровго цикла через объединение циклов.
+     *
      * @param graph Граф
-     * @param <T> Тип данных имен вершин
+     * @param <T>   Тип данных имен вершин
      * @return Список ребер в порядке обхода эйлерового цикла
-     * @throws GraphException
+     * @throws GraphException Не может быть брошено
      */
     public static <T> List<Edge<T>> findEulerCycle(final Graph<T> graph) throws GraphException {
+        Objects.requireNonNull(graph);
         Graph<T> graphOther = new MatrixGraph<>(graph);
 
         T startVertex = checkGraphForEuler(graphOther, true);
 
         List<T> result = new ArrayList<>();
-        Stack<T> stack = new Stack<>();
+        Deque<T> stack = new ArrayDeque<>();
         stack.push(startVertex);
 
         while (!stack.isEmpty()) {
@@ -182,15 +186,15 @@ public class GraphAlgorithmsB {
 
     /**
      * Проверка графа на эйлеровость. Проверяет граф на существование эйлерового цикла или эйлерового пути
-     * @param graph Граф
+     *
+     * @param graph   Граф
      * @param isCycle Обязательно должен существовать эйлеровый цикл
-     * @param <T> Тип данных имен вершин
+     * @param <T>     Тип данных имен вершин
      * @return Имя вершины с которой должен начинатся эйлеровый путь (цикл)
      * @throws GraphException Будет выброшено, если граф не эйлеровый
-     *
      * @see <a href="https://ru.wikipedia.org/wiki/Эйлеров_цикл">Условия существований эйлерового цикла и пути</a>
      */
-    private static <T> T checkGraphForEuler(Graph<T> graph, boolean isCycle) throws GraphException {
+    private static <T> T checkGraphForEuler(final Graph<T> graph, boolean isCycle) throws GraphException {
         // Проверка графа по критерию существования эйлерова пути для ориентированного графа
         // https://ru.wikipedia.org/wiki/Эйлеров_цикл
         int degreeP1 = 0; // inDegree = outDegree + 1
@@ -242,17 +246,19 @@ public class GraphAlgorithmsB {
 
     /**
      * Алгоритм  Косарайю. Алгоритм для нахождения сильных компонет связности.
+     *
      * @param graph Граф
-     * @param <T> Тип данных имен вершин
+     * @param <T>   Тип данных имен вершин
      * @return Список объединений, где каждое объединение - список вершин одной компоненты связности
      * @throws GraphException Не может быть выбрешено
      */
     public static <T> List<List<T>> kosaraju(final Graph<T> graph) throws GraphException {
+        Objects.requireNonNull(graph);
         List<List<T>> result = new ArrayList<>();
 
         // Non-recursive algorithm
-        Stack<T> dfsStack = new Stack<>();
-        Stack<T> resultStack = new Stack<>();
+        Deque<T> dfsStack = new ArrayDeque<>();
+        Deque<T> resultStack = new ArrayDeque<>();
         Deque<T> unvisited = new ArrayDeque<>(graph.getVertexNames());
         dfsStack.add(graph.getVertexNames().get(0));
         while (!dfsStack.isEmpty() || !unvisited.isEmpty()) {
@@ -299,6 +305,7 @@ public class GraphAlgorithmsB {
             }
         }
 
+        result.sort((x, y) -> Integer.compare(y.size(), x.size()));
         return result;
     }
 
@@ -313,7 +320,7 @@ public class GraphAlgorithmsB {
      * @param <T>     Тип данных имен вершин
      * @throws GraphException Не может быть брошено
      */
-    private static <T> void dfsExtended(T vertex, Graph<T> graph, Set<T> visited, Stack<T> stack) throws GraphException {
+    private static <T> void dfsExtended(T vertex, Graph<T> graph, Set<T> visited, Deque<T> stack) throws GraphException {
         if (!visited.contains(vertex)) {
             visited.add(vertex);
             for (T neighbor : graph.getOutEdges(vertex)) {

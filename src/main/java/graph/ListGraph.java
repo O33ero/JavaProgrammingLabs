@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Реализация графа через списки смежности.
+ * Реализация ориентированного графа через списки смежности.
+ *
  * @param <T> Тип данных имен вершин
+ * @see <a href=www.baeldung.com/java-graphs>baeldung.com/java-graphs</a>
  */
-public class ListGraph<T> extends Graph<T>{
-    private final List<T> vertexNames = new ArrayList<>();
+public class ListGraph<T> extends Graph<T> {
     private final List<ArrayList<Node<T>>> adjacencyList = new ArrayList<>();
 
     private static class Node<T> {
@@ -17,6 +18,7 @@ public class ListGraph<T> extends Graph<T>{
             this.name = vertexName;
             this.weight = weight;
         }
+
         T name;
         int weight;
 
@@ -40,7 +42,7 @@ public class ListGraph<T> extends Graph<T>{
 
         @Override
         public String toString() {
-            return  "{" +
+            return "{" +
                     name +
                     " : " +
                     weight +
@@ -53,11 +55,11 @@ public class ListGraph<T> extends Graph<T>{
     }
 
     public ListGraph(Graph<T> graph) {
-        for(T vertex : graph.getVertexNames()) {
+        for (T vertex : graph.getVertexNames()) {
             this.addVertex(vertex);
         }
 
-        for(Edge<T> edge : graph.getAllEdges()) {
+        for (Edge<T> edge : graph.getAllEdges()) {
             this.addEdge(edge.src, edge.dest, edge.weight);
         }
     }
@@ -65,7 +67,7 @@ public class ListGraph<T> extends Graph<T>{
 
     @Override
     public boolean addVertex(T vertexName) {
-        if(vertexNames.contains(vertexName)) {
+        if (vertexNames.contains(vertexName)) {
             return false;
         }
         vertexNames.add(vertexName);
@@ -101,7 +103,7 @@ public class ListGraph<T> extends Graph<T>{
     @Override
     public void removeVertex(T vertex) {
         int vertexIndex = vertexNames.indexOf(vertex);
-        for(List<Node<T>> list : adjacencyList) {
+        for (List<Node<T>> list : adjacencyList) {
             int index = getNodeIndex(list, vertex);
             if (index != -1) {
                 list.remove(index);
@@ -125,7 +127,7 @@ public class ListGraph<T> extends Graph<T>{
     public List<T> getInEdges(T vertex) {
         List<T> result = new ArrayList<>();
 
-        for(List<Node<T>> list : adjacencyList) {
+        for (List<Node<T>> list : adjacencyList) {
             int index = getNodeIndex(list, vertex);
             if (index != -1) {
                 result.add(list.get(index).name);
@@ -151,7 +153,7 @@ public class ListGraph<T> extends Graph<T>{
     @Override
     public boolean containNegativeEdge() {
         for (List<Node<T>> list : adjacencyList) {
-            for(Node<T> node : list) {
+            for (Node<T> node : list) {
                 if (node.weight < 0) {
                     return true;
                 }
@@ -170,10 +172,10 @@ public class ListGraph<T> extends Graph<T>{
     @Override
     public List<Edge<T>> getAllEdges() {
         List<Edge<T>> result = new ArrayList<>();
-        for(int i = 0; i < adjacencyList.size(); i++) {
+        for (int i = 0; i < adjacencyList.size(); i++) {
             T root = vertexNames.get(i);
             List<Node<T>> vertexList = adjacencyList.get(i);
-            for(Node<T> node : vertexList) {
+            for (Node<T> node : vertexList) {
                 result.add(new Edge<>(root, node.name, node.weight));
             }
         }
@@ -210,7 +212,7 @@ public class ListGraph<T> extends Graph<T>{
 
     private String stringListGraph() {
         StringBuilder strBuilder = new StringBuilder();
-        for(int i = 0; i < adjacencyList.size(); i++) {
+        for (int i = 0; i < adjacencyList.size(); i++) {
             T root = vertexNames.get(i);
             List<Node<T>> vertexList = adjacencyList.get(i);
             strBuilder.append(root).append(" -> ").append(vertexList).append("\n");
@@ -219,8 +221,8 @@ public class ListGraph<T> extends Graph<T>{
     }
 
     private int getNodeIndex(List<Node<T>> list, T vertex) {
-        for(int i = 0; i < list.size(); i++) {
-            if(list.get(i).name.equals(vertex)) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).name.equals(vertex)) {
                 return i;
             }
         }

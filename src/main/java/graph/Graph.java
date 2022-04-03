@@ -1,9 +1,13 @@
 package graph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Интерфейся для ориентированных графов. Функций, описанных ниже, достаточно для реализации всех алгоритмов на графах.
+ *
  * @param <T> Тип данных имен вершин
  */
 public abstract class Graph<T> {
@@ -21,33 +25,37 @@ public abstract class Graph<T> {
      * Добавляет новое ребро с весом 1
      *
      * @param from Из
-     * @param to В
+     * @param to   В
      */
     public abstract void addEdge(T from, T to);
 
     /**
      * Добавляет новое ребро с весом {@code weight}
-     * @param from Из
-     * @param to В
+     *
+     * @param from   Из
+     * @param to     В
      * @param weight Вес
      */
     public abstract void addEdge(T from, T to, int weight);
 
     /**
      * Удаляет ребро
+     *
      * @param from Из
-     * @param to В
+     * @param to   В
      */
     public abstract void removeEdge(T from, T to);
 
     /**
      * Удаляет вершину
+     *
      * @param vertex Имя вершины
      */
     public abstract void removeVertex(T vertex);
 
     /**
      * Возвращает количество вершин
+     *
      * @return Количество вершин
      */
     public int vertexCount() {
@@ -56,12 +64,14 @@ public abstract class Graph<T> {
 
     /**
      * Возвращает количество ребер
+     *
      * @return Количество ребер
      */
     public abstract int edgeCount();
 
     /**
      * Возвращает список входящих ребер
+     *
      * @param vertex Имя вершины
      * @return Список имен вершин
      */
@@ -69,6 +79,7 @@ public abstract class Graph<T> {
 
     /**
      * Возвращает список исходящих вершин
+     *
      * @param vertex Имя вершины
      * @return Список имен вершин
      */
@@ -76,6 +87,7 @@ public abstract class Graph<T> {
 
     /**
      * Проверяет граф на наличие вершины
+     *
      * @param vertex Имя вершины
      * @return Результат проверки
      */
@@ -85,26 +97,32 @@ public abstract class Graph<T> {
 
     /**
      * Проверяет граф на наличие ребер с отрицательным весом
+     *
      * @return Результат проверки
      */
     public abstract boolean containNegativeEdge();
 
     /**
      * Возвращает вес ребра или 0, если такого ребра нет
+     *
      * @param from Из
-     * @param to В
+     * @param to   В
      * @return Вес ребра {@code from} -> {@code to}
      */
-    public abstract int getWeight(T from, T to);
+    public int getWeight(T from, T to) {
+        return getEdge(from, to).weight;
+    }
 
     /**
      * Возвращает список всех ребер
+     *
      * @return Список всех ребер
      */
     public abstract List<Edge<T>> getAllEdges();
 
     /**
      * Возвращает список вершин, для которых {@code vertex} является истоком.
+     *
      * @param vertex Имя вершины
      * @return Список ребер
      */
@@ -112,21 +130,23 @@ public abstract class Graph<T> {
 
     /**
      * Возвращает ребро, для котрого определен источник и конец
-     * @param src Истчник
+     *
+     * @param src  Истчник
      * @param dest Конец
      * @return Ребро из источника в конец или null, если такой вершины не существует
      */
-   public Edge<T> getEdge(T src, T dest) {
-       for(Edge<T> edge : getEdges(src)) {
-           if (edge.src.equals(src) && edge.dest.equals(dest)) {
-               return edge;
-           }
-       }
-       return null;
-   }
+    public Edge<T> getEdge(T src, T dest) {
+        for (Edge<T> edge : getEdges(src)) {
+            if (edge.src.equals(src) && edge.dest.equals(dest)) {
+                return edge;
+            }
+        }
+        return null;
+    }
 
     /**
      * Возвращает список всех имен вершин в графе
+     *
      * @return Список имен вершин
      */
     public List<T> getVertexNames() {
@@ -135,12 +155,14 @@ public abstract class Graph<T> {
 
     /**
      * Возвращает новый объект, того же типа
+     *
      * @return Новый объект
      */
     public abstract Graph<T> getNewInstance();
 
     /**
      * Красивый вывод графа
+     *
      * @return Строка для вывода графа
      */
     @Override
@@ -149,7 +171,7 @@ public abstract class Graph<T> {
     public Graph<T> getTransposedGraph() {
         Graph<T> transposedGraph = this.getNewInstance();
 
-        for(T vertex : this.getVertexNames()) {
+        for (T vertex : this.getVertexNames()) {
             transposedGraph.addVertex(vertex);
         }
 
@@ -161,7 +183,7 @@ public abstract class Graph<T> {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

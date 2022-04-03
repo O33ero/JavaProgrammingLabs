@@ -27,75 +27,10 @@ import java.util.*;
 public class MatrixGraph<T> extends Graph<T> {
     final List<ArrayList<Integer>> adjacencyMatrix = new ArrayList<>();  // Adjacency Matrix (Матрица смежности)
 
-
     public MatrixGraph() {
         // Default constructor
         // No vertex
         // No edges
-    }
-
-    public MatrixGraph(T vertex) {
-        addVertex(vertex);
-    }
-
-    public MatrixGraph(T vertex1, T vertex2) throws GraphException {
-        Set<T> set = new HashSet<>(); // Need for remove duplicates
-        set.add(vertex1);
-        set.add(vertex2);
-        if (set.size() != 2) {
-            throw new GraphException("Vertexes must be different in pairs");
-        } else { // parameters has duplicates
-            addVertex(vertex1);
-            addVertex(vertex2);
-        }
-    }
-
-    public MatrixGraph(T vertex1, T vertex2, T vertex3) throws GraphException {
-        Set<T> set = new HashSet<>();
-        set.add(vertex1);
-        set.add(vertex2);
-        set.add(vertex3);
-        if (set.size() != 3) { // parameters has duplicates
-            throw new GraphException("Vertexes must be different in pairs");
-        } else {
-            addVertex(vertex1);
-            addVertex(vertex2);
-            addVertex(vertex3);
-        }
-    }
-
-    public MatrixGraph(T vertex1, T vertex2, T vertex3, T vertex4) throws GraphException {
-        Set<T> set = new HashSet<>();
-        set.add(vertex1);
-        set.add(vertex2);
-        set.add(vertex3);
-        set.add(vertex4);
-        if (set.size() != 4) { // parameters has duplicates
-            throw new GraphException("Vertexes must be different in pairs");
-        } else {
-            addVertex(vertex1);
-            addVertex(vertex2);
-            addVertex(vertex3);
-            addVertex(vertex4);
-        }
-    }
-
-    public MatrixGraph(T vertex1, T vertex2, T vertex3, T vertex4, T vertex5) throws GraphException {
-        Set<T> set = new HashSet<>();
-        set.add(vertex1);
-        set.add(vertex2);
-        set.add(vertex3);
-        set.add(vertex4);
-        set.add(vertex5);
-        if (set.size() != 5) { // parameters has duplicates
-            throw new GraphException("Vertexes must be different in pairs");
-        } else {
-            addVertex(vertex1);
-            addVertex(vertex2);
-            addVertex(vertex3);
-            addVertex(vertex4);
-            addVertex(vertex5);
-        }
     }
 
     public MatrixGraph(Collection<T> collection) throws GraphException {

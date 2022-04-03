@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 class GraphBTest {
@@ -115,7 +117,9 @@ class GraphBTest {
         graph.addEdge(5, 1);
 
         // 1 -> 2 -> 3 -> 4 -> 5
-        System.out.println(GraphAlgorithmsB.fleury(graph));
+        System.out.println("Expect: 5 -> 1 -> 2 -> 3 -> 4 -> 5");
+        System.out.println("Actual: " + GraphAlgorithmsB.fleury(graph));
+        System.out.println();
     }
 
     @Test
@@ -138,7 +142,9 @@ class GraphBTest {
         graph.addEdge(2, 5);
 
         // 2 -> 3 -> 4 -> 5 -> 1 -> 2 -> 5
-        System.out.println(GraphAlgorithmsB.fleury(graph));
+        System.out.println("Expect: 2 -> 3 -> 4 -> 5 -> 1 -> 2 -> 5");
+        System.out.println("Actual: " + GraphAlgorithmsB.fleury(graph));
+        System.out.println();
     }
 
     @Test
@@ -165,7 +171,9 @@ class GraphBTest {
         graph.addEdge(5, 1);
 
         // 6 -> 1 -> 2 -> 3 -> 4 -> 7 -> 8 -> 6 -> 5 -> 1
-        System.out.println(GraphAlgorithmsB.fleury(graph));
+        System.out.println("Expect: 6 -> 1 -> 2 -> 3 -> 4 -> 7 -> 8 -> 6 -> 5 -> 1");
+        System.out.println("Actual: " + GraphAlgorithmsB.fleury(graph));
+        System.out.println();
     }
 
     @Test
@@ -186,34 +194,26 @@ class GraphBTest {
 
         graph.addEdge(1, 2);
         graph.addEdge(1, 9);
-
         graph.addEdge(2, 3);
-
         graph.addEdge(3, 4);
-
         graph.addEdge(4, 5);
         graph.addEdge(4, 7);
-
         graph.addEdge(5, 1);
         graph.addEdge(5, 7);
-
         graph.addEdge(6, 1);
         graph.addEdge(6, 5);
-
         graph.addEdge(7, 8);
         graph.addEdge(7, 10);
-
         graph.addEdge(8, 6);
         graph.addEdge(8, 11);
-
         graph.addEdge(9, 6);
-
         graph.addEdge(10, 4);
         graph.addEdge(10, 8);
-
         graph.addEdge(11, 10);
 
-        System.out.println(GraphAlgorithmsB.fleury(graph));
+        System.out.println("Expect: 1 -> 2 -> 3 -> 4 -> 5 -> 7 -> 8 -> 11 -> 10 -> 4 -> 7 -> 10 -> 8 -> 6 -> 5 -> 1 -> 9 -> 6 -> 1");
+        System.out.println("Actual: " + GraphAlgorithmsB.fleury(graph));
+        System.out.println();
     }
 
     @Test
@@ -232,7 +232,9 @@ class GraphBTest {
         graph.addEdge(4, 5);
 
         // 1 -> 2 -> 3 -> 4 -> 5
-        System.out.println(GraphAlgorithmsB.fleury(graph));
+        System.out.println("Expect: 1 -> 2 -> 3 -> 4 -> 5");
+        System.out.println("Actual: " + GraphAlgorithmsB.fleury(graph));
+        System.out.println();
     }
 
     @Test
@@ -266,7 +268,9 @@ class GraphBTest {
         graph.addEdge(5, 1);
 
         // 1 -> 2 -> 3 -> 4 -> 5
-        System.out.println(GraphAlgorithmsB.findEulerCycle(graph));
+        System.out.println("Expect: 1 -> 2 -> 3 -> 4 -> 5");
+        System.out.println("Actual: " + GraphAlgorithmsB.findEulerCycle(graph));
+        System.out.println();
     }
 
     @Test
@@ -287,39 +291,31 @@ class GraphBTest {
 
         graph.addEdge(1, 2);
         graph.addEdge(1, 9);
-
         graph.addEdge(2, 3);
-
         graph.addEdge(3, 4);
-
         graph.addEdge(4, 5);
         graph.addEdge(4, 7);
-
         graph.addEdge(5, 1);
         graph.addEdge(5, 7);
-
         graph.addEdge(6, 1);
         graph.addEdge(6, 5);
-
         graph.addEdge(7, 8);
         graph.addEdge(7, 10);
-
         graph.addEdge(8, 6);
         graph.addEdge(8, 11);
-
         graph.addEdge(9, 6);
-
         graph.addEdge(10, 4);
         graph.addEdge(10, 8);
-
         graph.addEdge(11, 10);
 
-        System.out.println(GraphAlgorithmsB.findEulerCycle(graph));
+        System.out.println("Expect: 1 -> 2 -> 3 -> 4 -> 5 -> 1 -> 9 -> 6 -> 5 -> 7 -> 8 -> 11 -> 10 -> 4 -> 7 -> 10 -> 8 -> 6 -> 1");
+        System.out.println("Actual: " + GraphAlgorithmsB.findEulerCycle(graph));
+        System.out.println();
     }
 
     @Test
     @DisplayName("FindEulerCycle Algorithm. Test: https://graphonline.ru/?graph=PhCmnmPynClnyoLA")
-    void GraphB_findEulerCycle_3() throws GraphException {
+    void GraphB_findEulerCycle_3() {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(1);
         graph.addVertex(2);
@@ -365,7 +361,11 @@ class GraphBTest {
         graph.addEdge(3, 4);
 
         // [0, 1, 2] [3] [4]
-        System.out.println(GraphAlgorithmsB.kosaraju(graph));
+        List<ArrayList<Integer>> expect = new ArrayList<>();
+        expect.add(new ArrayList<>(Arrays.asList(0, 1, 2)));
+        expect.add(new ArrayList<>(Arrays.asList(3)));
+        expect.add(new ArrayList<>(Arrays.asList(4)));
+        Assertions.assertEquals(expect, GraphAlgorithmsB.kosaraju(graph));
     }
 
     @Test
@@ -402,7 +402,12 @@ class GraphBTest {
         graph.addEdge(7, 8);
 
         // [0, 1, 2] [4, 5, 7] [7] [8]
-        System.out.println(GraphAlgorithmsB.kosaraju(graph));
+        List<ArrayList<Integer>> expect = new ArrayList<>();
+        expect.add(new ArrayList<>(Arrays.asList(0, 3, 2, 1)));
+        expect.add(new ArrayList<>(Arrays.asList(4, 6, 5)));
+        expect.add(new ArrayList<>(Arrays.asList(7)));
+        expect.add(new ArrayList<>(Arrays.asList(8)));
+        Assertions.assertEquals(expect, GraphAlgorithmsB.kosaraju(graph));
     }
 
     @Test
@@ -438,6 +443,11 @@ class GraphBTest {
         graph.addEdge(6, 7);
 
         // [0, 1, 2] [3] [4, 5, 6] [7]
-        System.out.println(GraphAlgorithmsB.kosaraju(graph));
+        List<ArrayList<Integer>> expect = new ArrayList<>();
+        expect.add(new ArrayList<>(Arrays.asList(4, 6, 5)));
+        expect.add(new ArrayList<>(Arrays.asList(0, 2, 1)));
+        expect.add(new ArrayList<>(Arrays.asList(7)));
+        expect.add(new ArrayList<>(Arrays.asList(3)));
+        Assertions.assertEquals(expect, GraphAlgorithmsB.kosaraju(graph));
     }
 }

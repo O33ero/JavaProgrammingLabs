@@ -8,12 +8,14 @@ public class GraphAlgorithmsA {
     private GraphAlgorithmsA() {
     }
 
-    public static <T> List<T> dfs(Graph<T> graph, T srcVertex) throws GraphException {
+    public static <T> List<T> dfs(final Graph<T> graph, T srcVertex) throws GraphException {
+        Objects.requireNonNull(graph);
+        Objects.requireNonNull(srcVertex);
         if (!graph.isContain(srcVertex)) {
             throw new GraphException("Vertex '" + srcVertex + "' does not exist");
         }
 
-        Stack<T> stack = new Stack<>();
+        Deque<T> stack = new ArrayDeque<>();
         List<T> visited = new ArrayList<>();
         stack.push(srcVertex);
         while (!stack.isEmpty()) {
@@ -33,7 +35,9 @@ public class GraphAlgorithmsA {
         return visited;
     }
 
-    public static <T> Set<T> bfs(Graph<T> graph, T srcVertex) throws GraphException {
+    public static <T> Set<T> bfs(final Graph<T> graph, T srcVertex) throws GraphException {
+        Objects.requireNonNull(graph);
+        Objects.requireNonNull(srcVertex);
         if (!graph.isContain(srcVertex)) {
             throw new GraphException("Vertex '" + srcVertex + "' does not exist");
         }
@@ -69,7 +73,7 @@ public class GraphAlgorithmsA {
      * @return Карта с весами кратчайших путей
      * @throws GraphException Граф не должен содержать отрицательных весов, вершина {@code srcVertex} должна принадлежать графу.
      */
-    public static <T> Map<T, Integer> dijkstra(Graph<T> graph, T srcVertex) throws GraphException {
+    public static <T> Map<T, Integer> dijkstra(final Graph<T> graph, T srcVertex) throws GraphException {
         Objects.requireNonNull(graph);
         Objects.requireNonNull(srcVertex);
 
@@ -116,9 +120,9 @@ public class GraphAlgorithmsA {
             }
         }
 
-        for(T key : shortestPathWeight.keySet()) {
-            if (shortestPathWeight.get(key) == Integer.MAX_VALUE) {
-                shortestPathWeight.put(key, -1);
+        for(Map.Entry<T, Integer> key : shortestPathWeight.entrySet()) {
+            if (shortestPathWeight.get(key.getKey()) == Integer.MAX_VALUE) {
+                shortestPathWeight.put(key.getKey(), -1);
             }
         }
         return shortestPathWeight;
@@ -136,7 +140,7 @@ public class GraphAlgorithmsA {
      * @return Значение веса кратчайшего пути от {@code srcVertex} до {@code destVertex} или -1, если пути не существует
      * @throws GraphException Граф не должен содержать отрицательных весов, вершины {@code srcVertex} и {@code destVertex} должны принадлежать графу.
      */
-    public static <T> int dijkstra(Graph<T> graph, T srcVertex, T destVertex) throws GraphException {
+    public static <T> int dijkstra(final Graph<T> graph, T srcVertex, T destVertex) throws GraphException {
         Objects.requireNonNull(graph);
         Objects.requireNonNull(srcVertex);
         Objects.requireNonNull(destVertex);
@@ -159,7 +163,8 @@ public class GraphAlgorithmsA {
      * @param <T> Тип данных вершин
      * @return Минимальный оставной граф
      */
-    public static <T> Graph<T> kruskal(Graph<T> graph) {
+    public static <T> Graph<T> kruskal(final Graph<T> graph) {
+        Objects.requireNonNull(graph);
         Graph<T> spanningGraph = graph.getNewInstance();
 
         // Create list of edges in non-decreasing order
@@ -255,7 +260,8 @@ public class GraphAlgorithmsA {
      * @param <T> Тип данных имен вершин
      * @return Минимальный оставной граф
      */
-    public static <T> Graph<T> prim(Graph<T> graph) {
+    public static <T> Graph<T> prim(final Graph<T> graph) {
+        Objects.requireNonNull(graph);
         Graph<T> spanningGraph = graph.getNewInstance();
         for(T vertex : graph.getVertexNames()) {
             spanningGraph.addVertex(vertex);
@@ -291,7 +297,8 @@ public class GraphAlgorithmsA {
      * @return Список длин кратчайших путей между всеми парами вершин.
      * @throws GraphException Граф имеет отрицательные веса
      */
-    public static <T> List<Edge<T>> floydWarshall(Graph<T> graph) throws GraphException {
+    public static <T> List<Edge<T>> floydWarshall(final Graph<T> graph) throws GraphException {
+        Objects.requireNonNull(graph);
         if (graph.containNegativeEdge()) {
             throw new GraphException("Graph cannot contain negative edge");
         }
