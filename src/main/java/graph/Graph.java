@@ -1,9 +1,6 @@
 package graph;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Интерфейся для ориентированных графов. Функций, описанных ниже, достаточно для реализации всех алгоритмов на графах.

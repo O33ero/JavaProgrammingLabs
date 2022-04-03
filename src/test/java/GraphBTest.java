@@ -244,4 +244,96 @@ class GraphBTest {
 
         Assertions.assertThrows(GraphException.class, () -> GraphAlgorithmsB.fleury(graph));
     }
+
+
+    @Test
+    @DisplayName("FindEulerCycle Algorithm. Simple test: https://graphonline.ru/?graph=xCFoolzKXJeXyLBf")
+    void GraphB_findEulerCycle_0() throws GraphException {
+        Graph<Integer> graph = new MatrixGraph<>();
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+        graph.addVertex(4);
+        graph.addVertex(5);
+
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 3);
+        graph.addEdge(3, 4);
+        graph.addEdge(4, 5);
+        graph.addEdge(5, 1);
+
+        System.out.println(GraphAlgorithmsB.findEulerCycle(graph));
+    }
+
+    @Test
+    @DisplayName("FindEulerCycle Algorithm. Simple test: https://graphonline.ru/?graph=dzbrMsVGZbXrCtni")
+    void GraphB_findEulerCycle_1() throws GraphException {
+        Graph<Integer> graph = new MatrixGraph<>();
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+        graph.addVertex(4);
+        graph.addVertex(5);
+        graph.addVertex(6);
+        graph.addVertex(7);
+        graph.addVertex(8);
+        graph.addVertex(9);
+        graph.addVertex(10);
+        graph.addVertex(11);
+
+        graph.addEdge(1, 2);
+        graph.addEdge(1, 9);
+
+        graph.addEdge(2, 3);
+
+        graph.addEdge(3, 4);
+
+        graph.addEdge(4, 5);
+        graph.addEdge(4, 7);
+
+        graph.addEdge(5, 1);
+        graph.addEdge(5, 7);
+
+        graph.addEdge(6, 1);
+        graph.addEdge(6, 5);
+
+        graph.addEdge(7, 8);
+        graph.addEdge(7, 10);
+
+        graph.addEdge(8, 6);
+        graph.addEdge(8, 11);
+
+        graph.addEdge(9, 6);
+
+        graph.addEdge(10, 4);
+        graph.addEdge(10, 8);
+
+        graph.addEdge(11, 10);
+
+        System.out.println(GraphAlgorithmsB.findEulerCycle(graph));
+    }
+
+    @Test
+    @DisplayName("FindEulerCycle Algorithm. Simple test: http://graphonline.ru/?graph=PhCmnmPynClnyoLA")
+    void GraphB_findEulerCycle_3() throws GraphException {
+        Graph<Integer> graph = new MatrixGraph<>();
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+        graph.addVertex(4);
+        graph.addVertex(5);
+
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 3);
+        graph.addEdge(3, 4);
+        graph.addEdge(4, 5);
+        graph.addEdge(5, 1);
+
+        graph.addEdge(2, 5);
+
+        // Graph does not contain euler graph
+        Assertions.assertThrows(GraphException.class, () ->
+            GraphAlgorithmsB.findEulerCycle(graph)
+        );
+    }
 }
