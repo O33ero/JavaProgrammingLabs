@@ -3,6 +3,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import substring.Substring;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 class SubstringTest {
@@ -27,13 +28,22 @@ class SubstringTest {
             new Utils.TestCases("русский текст and english text"," ",               new Integer[]{7, 13, 17, 25}),
             new Utils.TestCases("русская 'а' and english 'a'",   "a",               new Integer[]{12, 25}),
             new Utils.TestCases("text",                          "texttext",        new Integer[]{}),
+            new Utils.TestCases("AABAACAADAABAABA",              "AABA",            new Integer[]{0, 9, 12}),
             // FIXME: maybe should to remove this last crazy test :)
             new Utils.TestCases(
                     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
                         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+
                         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
                         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "a",
-                   IntStream.rangeClosed(0, 255).boxed().toList().toArray(new Integer[0]))
+                   IntStream.rangeClosed(0, 255).boxed().toList().toArray(new Integer[0])),
+            new Utils.TestCases(
+                    "Какой то большой текст об очень интересных вещах. Кажется, что это" +
+                        "просто текст для теста, но может это что то больше. Ведь этот "+
+                        "небольшой абзац мог быть частью какой то книги о теории тестир-" +
+                        "ровании. Может это абзац из теории TDD. А может это вообще нахо-" +
+                        "дится в официальной документации JUnit... Или все же это просто " +
+                        "тест в очередной лабараторной студента по программированию",
+                    "те", new Integer[]{17, 34, 73, 83, 177, 184, 219, 315})
     };
 
     @Test
@@ -113,8 +123,4 @@ class SubstringTest {
                 Substring.finiteAutomata(null, null));
     }
 
-    @Test
-    void Substring_finiteAutomata_test() {
-        Assertions.assertArrayEquals(new Integer[]{0, 9, 12},Substring.finiteAutomata("AABAACAADAABAABA", "AABA"));
-    }
 }
