@@ -138,6 +138,13 @@ public class GraphAlgorithmsB {
         return allEdgesCount == newEdgesCount;
     }
 
+    /**
+     * Поиск эйлеровго цикла через объединение циклов.
+     * @param graph Граф
+     * @param <T> Тип данных имен вершин
+     * @return Список ребер в порядке обхода эйлерового цикла
+     * @throws GraphException
+     */
     public static <T> List<Edge<T>> findEulerCycle(final Graph<T> graph) throws GraphException {
         Graph<T> graphOther = new MatrixGraph<>(graph);
 
@@ -149,21 +156,6 @@ public class GraphAlgorithmsB {
 
         while (!stack.isEmpty()) {
             T v = stack.peek();
-//            boolean findEdge = false;
-//            for (T u : graphOther.getVertexNames()) {
-//                if (graphOther.getAllEdges().contains(graphOther.getEdge(v, u))) {
-//                    stack.push(u);
-//                    graphOther.removeEdge(v, u);
-//                    findEdge = true;
-//                    break;
-//                }
-//            }
-//
-//            if (!findEdge) {
-//                stack.pop();
-//                result.add(v);
-//            }
-
             if (graphOther.getOutEdges(v).isEmpty()) {
                 result.add(v);
                 stack.pop();
@@ -178,7 +170,7 @@ public class GraphAlgorithmsB {
 
         // convert list of vertexes to list of edges
         List<Edge<T>> edgeResult = new ArrayList<>();
-        for(int i = 0; i < result.size() - 1; i++) {
+        for (int i = 0; i < result.size() - 1; i++) {
             edgeResult.add(
                     graph.getEdge(result.get(i), result.get(i + 1))
             );
@@ -188,6 +180,16 @@ public class GraphAlgorithmsB {
         return edgeResult;
     }
 
+    /**
+     * Проверка графа на эйлеровость. Проверяет граф на существование эйлерового цикла или эйлерового пути
+     * @param graph Граф
+     * @param isCycle Обязательно должен существовать эйлеровый цикл
+     * @param <T> Тип данных имен вершин
+     * @return Имя вершины с которой должен начинатся эйлеровый путь (цикл)
+     * @throws GraphException Будет выброшено, если граф не эйлеровый
+     *
+     * @see <a href="https://ru.wikipedia.org/wiki/Эйлеров_цикл">Условия существований эйлерового цикла и пути</a>
+     */
     private static <T> T checkGraphForEuler(Graph<T> graph, boolean isCycle) throws GraphException {
         // Проверка графа по критерию существования эйлерова пути для ориентированного графа
         // https://ru.wikipedia.org/wiki/Эйлеров_цикл
@@ -235,6 +237,90 @@ public class GraphAlgorithmsB {
         }
 
         return startVertex;
+    }
+
+
+    /**
+     * Алгоритм  Косарайю. Алгоритм для нахождения сильных компонет связности.
+     * @param graph Граф
+     * @param <T> Тип данных имен вершин
+     * @return Список объединений, где каждое объединение - список вершин одной компоненты связности
+     * @throws GraphException Не может быть выбрешено
+     */
+    public static <T> List<List<T>> kosaraju(final Graph<T> graph) throws GraphException {
+        List<List<T>> result = new ArrayList<>();
+
+        // Non-recursive algorithm
+        Stack<T> dfsStack = new Stack<>();
+        Stack<T> resultStack = new Stack<>();
+        Deque<T> unvisited = new ArrayDeque<>(graph.getVertexNames());
+        dfsStack.add(graph.getVertexNames().get(0));
+        while (!dfsStack.isEmpty() || !unvisited.isEmpty()) {
+            T vertex;
+            if (dfsStack.isEmpty()) {
+                vertex = unvisited.peek();
+                dfsStack.add(vertex);
+            } else {
+                vertex = dfsStack.peek();
+            }
+            unvisited.remove(vertex);
+
+            boolean existUnvisitedNeighbor = false;
+            for (T neighbor : graph.getOutEdges(vertex)) {
+                if (unvisited.contains(neighbor)) {
+                    dfsStack.add(neighbor);
+                    existUnvisitedNeighbor = true;
+                    break;
+                }
+            }
+            if (existUnvisitedNeighbor) {
+                continue;
+            }
+
+            dfsStack.pop();
+            resultStack.add(vertex);
+        }
+
+//        // Recursive algorithm
+//        for (T vertex : graph.getVertexNames()) {
+//            dfsExtended(vertex, graph, visited, stack);
+//        }
+
+
+        Graph<T> transposedGraph = graph.getTransposedGraph();
+        Set<T> visited = new HashSet<>();
+        while (!resultStack.isEmpty()) {
+            T vertex = resultStack.pop();
+            if (!visited.contains(vertex)) {
+                List<T> componentList = GraphAlgorithmsA.dfs(transposedGraph, vertex);
+                componentList.removeAll(visited);
+                visited.addAll(componentList);
+                result.add(componentList);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Измененый DFS алгоритм, заполняющий {@code stack} в порядке "выхода" из вершины при обходе.
+     * Реккурсивное решение.
+     *
+     * @param vertex  Вершина
+     * @param graph   Граф
+     * @param visited Множество, посещенных вершин
+     * @param stack   Результирующий стек
+     * @param <T>     Тип данных имен вершин
+     * @throws GraphException Не может быть брошено
+     */
+    private static <T> void dfsExtended(T vertex, Graph<T> graph, Set<T> visited, Stack<T> stack) throws GraphException {
+        if (!visited.contains(vertex)) {
+            visited.add(vertex);
+            for (T neighbor : graph.getOutEdges(vertex)) {
+                dfsExtended(neighbor, graph, visited, stack);
+            }
+            stack.add(vertex);
+        }
     }
 
 

@@ -99,7 +99,7 @@ class GraphBTest {
 
 
     @Test
-    @DisplayName("Fleury’s Algorithm. Simple test: https://graphonline.ru/?graph=mUImtGrPpVRmTsjO")
+    @DisplayName("Fleury’s Algorithm. Test: https://graphonline.ru/?graph=mUImtGrPpVRmTsjO")
     void GraphB_fleury_0() throws GraphException {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(5);
@@ -114,11 +114,12 @@ class GraphBTest {
         graph.addEdge(4, 5);
         graph.addEdge(5, 1);
 
+        // 1 -> 2 -> 3 -> 4 -> 5
         System.out.println(GraphAlgorithmsB.fleury(graph));
     }
 
     @Test
-    @DisplayName("Fleury’s Algorithm. Simple test: https://graphonline.ru/?graph=DyKsursxSUDeLVUk")
+    @DisplayName("Fleury’s Algorithm. Test: https://graphonline.ru/?graph=DyKsursxSUDeLVUk")
     void GraphB_fleury_1() throws GraphException {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(1);
@@ -136,11 +137,12 @@ class GraphBTest {
 
         graph.addEdge(2, 5);
 
+        // 2 -> 3 -> 4 -> 5 -> 1 -> 2 -> 5
         System.out.println(GraphAlgorithmsB.fleury(graph));
     }
 
     @Test
-    @DisplayName("Fleury’s Algorithm. Simple test: https://graphonline.ru/?graph=LcOCAFkkXFGlpPnD")
+    @DisplayName("Fleury’s Algorithm. Test: https://graphonline.ru/?graph=LcOCAFkkXFGlpPnD")
     void GraphB_fleury_2() throws GraphException {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(8);
@@ -162,12 +164,12 @@ class GraphBTest {
         graph.addEdge(6, 5);
         graph.addEdge(5, 1);
 
-
+        // 6 -> 1 -> 2 -> 3 -> 4 -> 7 -> 8 -> 6 -> 5 -> 1
         System.out.println(GraphAlgorithmsB.fleury(graph));
     }
 
     @Test
-    @DisplayName("Fleury’s Algorithm. Simple test: https://graphonline.ru/?graph=dzbrMsVGZbXrCtni")
+    @DisplayName("Fleury’s Algorithm. Test: https://graphonline.ru/?graph=dzbrMsVGZbXrCtni")
     void GraphB_fleury_3() throws GraphException {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(1);
@@ -215,7 +217,7 @@ class GraphBTest {
     }
 
     @Test
-    @DisplayName("Fleury’s Algorithm. Simple test: https://graphonline.ru/?graph=edkbLGQCMWSFEOTW")
+    @DisplayName("Fleury’s Algorithm. Test: https://graphonline.ru/?graph=edkbLGQCMWSFEOTW")
     void GraphB_fleury_4() throws GraphException {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(5);
@@ -229,6 +231,7 @@ class GraphBTest {
         graph.addEdge(3, 4);
         graph.addEdge(4, 5);
 
+        // 1 -> 2 -> 3 -> 4 -> 5
         System.out.println(GraphAlgorithmsB.fleury(graph));
     }
 
@@ -247,7 +250,7 @@ class GraphBTest {
 
 
     @Test
-    @DisplayName("FindEulerCycle Algorithm. Simple test: https://graphonline.ru/?graph=xCFoolzKXJeXyLBf")
+    @DisplayName("FindEulerCycle Algorithm. Test: https://graphonline.ru/?graph=xCFoolzKXJeXyLBf")
     void GraphB_findEulerCycle_0() throws GraphException {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(1);
@@ -262,11 +265,12 @@ class GraphBTest {
         graph.addEdge(4, 5);
         graph.addEdge(5, 1);
 
+        // 1 -> 2 -> 3 -> 4 -> 5
         System.out.println(GraphAlgorithmsB.findEulerCycle(graph));
     }
 
     @Test
-    @DisplayName("FindEulerCycle Algorithm. Simple test: https://graphonline.ru/?graph=dzbrMsVGZbXrCtni")
+    @DisplayName("FindEulerCycle Algorithm. Test: https://graphonline.ru/?graph=dzbrMsVGZbXrCtni")
     void GraphB_findEulerCycle_1() throws GraphException {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(1);
@@ -314,7 +318,7 @@ class GraphBTest {
     }
 
     @Test
-    @DisplayName("FindEulerCycle Algorithm. Simple test: http://graphonline.ru/?graph=PhCmnmPynClnyoLA")
+    @DisplayName("FindEulerCycle Algorithm. Test: https://graphonline.ru/?graph=PhCmnmPynClnyoLA")
     void GraphB_findEulerCycle_3() throws GraphException {
         Graph<Integer> graph = new MatrixGraph<>();
         graph.addVertex(1);
@@ -333,7 +337,107 @@ class GraphBTest {
 
         // Graph does not contain euler graph
         Assertions.assertThrows(GraphException.class, () ->
-            GraphAlgorithmsB.findEulerCycle(graph)
+                GraphAlgorithmsB.findEulerCycle(graph)
         );
+    }
+
+    @Test
+    @DisplayName("Kosaraju's algorithm. Test: https://graphonline.ru/?graph=aaKwNXXLQeruYVjg")
+    void GraphB_kosaraju_0() throws GraphException {
+        Graph<Integer> graph = new MatrixGraph<>();
+
+        // #3 component
+        graph.addVertex(0);
+        graph.addVertex(1);
+        graph.addVertex(2);
+
+        // #1 component
+        graph.addVertex(3);
+
+        // #2 component
+        graph.addVertex(4);
+
+
+        graph.addEdge(0, 2);
+        graph.addEdge(2, 1);
+        graph.addEdge(1, 0);
+        graph.addEdge(0, 3);
+        graph.addEdge(3, 4);
+
+        // [0, 1, 2] [3] [4]
+        System.out.println(GraphAlgorithmsB.kosaraju(graph));
+    }
+
+    @Test
+    @DisplayName("Kosaraju's algorithm. Test: https://graphonline.ru/?graph=oOaXQYPliayGIdqz")
+    void GraphB_kosaraju_1() throws GraphException {
+        Graph<Integer> graph = new MatrixGraph<>();
+
+        // #1 component
+        graph.addVertex(0);
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addVertex(3);
+
+        // #2 component
+        graph.addVertex(4);
+        graph.addVertex(5);
+        graph.addVertex(6);
+
+        // #3 component
+        graph.addVertex(7);
+
+        // #4 component
+        graph.addVertex(8);
+
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 3);
+        graph.addEdge(3, 0);
+        graph.addEdge(2, 4);
+        graph.addEdge(4, 5);
+        graph.addEdge(5, 6);
+        graph.addEdge(6, 4);
+        graph.addEdge(7, 6);
+        graph.addEdge(7, 8);
+
+        // [0, 1, 2] [4, 5, 7] [7] [8]
+        System.out.println(GraphAlgorithmsB.kosaraju(graph));
+    }
+
+    @Test
+    @DisplayName("Kosaraju's algorithm. Test: https://graphonline.ru/?graph=wyWGzrZAUafkKSJy")
+    void GraphB_kosaraju_2() throws GraphException {
+        Graph<Integer> graph = new MatrixGraph<>();
+
+        // #1 component
+        graph.addVertex(0);
+        graph.addVertex(1);
+        graph.addVertex(2);
+
+        // #2 component
+        graph.addVertex(3);
+
+        // #3 component
+        graph.addVertex(4);
+        graph.addVertex(5);
+        graph.addVertex(6);
+
+        // #4 component
+        graph.addVertex(7);
+
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+        graph.addEdge(2, 3);
+        graph.addEdge(4, 3);
+        graph.addEdge(4, 7);
+        graph.addEdge(4, 5);
+        graph.addEdge(6, 4);
+        graph.addEdge(5, 6);
+        graph.addEdge(6, 7);
+
+        // [0, 1, 2] [3] [4, 5, 6] [7]
+        System.out.println(GraphAlgorithmsB.kosaraju(graph));
     }
 }

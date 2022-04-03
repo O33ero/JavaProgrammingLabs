@@ -146,6 +146,20 @@ public abstract class Graph<T> {
     @Override
     public abstract String toString();
 
+    public Graph<T> getTransposedGraph() {
+        Graph<T> transposedGraph = this.getNewInstance();
+
+        for(T vertex : this.getVertexNames()) {
+            transposedGraph.addVertex(vertex);
+        }
+
+        for (Edge<T> edge : this.getAllEdges()) {
+            transposedGraph.addEdge(edge.dest, edge.src, edge.weight);
+        }
+
+        return transposedGraph;
+    }
+
     @Override
     public boolean equals(Object o){
         if (this == o) return true;
