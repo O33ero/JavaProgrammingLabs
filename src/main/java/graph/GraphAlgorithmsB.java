@@ -257,8 +257,8 @@ public class GraphAlgorithmsB {
         List<List<T>> result = new ArrayList<>();
 
         // Non-recursive algorithm
-        Deque<T> dfsStack = new ArrayDeque<>();
-        Deque<T> resultStack = new ArrayDeque<>();
+        Stack<T> dfsStack = new Stack<>();
+        Stack<T> resultStack = new Stack<>();
         Deque<T> unvisited = new ArrayDeque<>(graph.getVertexNames());
         dfsStack.add(graph.getVertexNames().get(0));
         while (!dfsStack.isEmpty() || !unvisited.isEmpty()) {
